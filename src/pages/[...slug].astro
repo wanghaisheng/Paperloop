@@ -26,18 +26,22 @@ const i18n = getTranslations(locale);
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <article id="input">{doc.markdown}</article>
+                    <article id="input" data-placeholder={i18n("write-something")}>
+                        {doc.markdown}
+                    </article>
                 </CardContent>
             </Card>
         </div>
         <Card className="h-full flex-1">
             <CardHeader>
                 <CardTitle>
-                    {doc.name}
+                    {i18n("preview")}
                 </CardTitle>
             </CardHeader>
             <CardContent className="prose">
-                <article id="output">{doc.markdown}</article>
+                <article id="output">
+                    {doc.markdown}
+                </article>
             </CardContent>
         </Card>
     </div>
@@ -45,7 +49,7 @@ const i18n = getTranslations(locale);
 
 <script>
     import { standardKeymap, historyKeymap, history } from "@codemirror/commands";
-    import { EditorView, keymap } from "@codemirror/view";
+    import { EditorView, keymap, placeholder } from "@codemirror/view";
     import { markdown } from "@codemirror/lang-markdown";
     import Markdoc from "@markdoc/markdoc";
 
@@ -63,7 +67,8 @@ const i18n = getTranslations(locale);
         const output = document.getElementById("output");
         if (!input || !output) throw new Error();
 
-        const content = input.textContent ?? String();
+        const fallback = input.getAttribute("data-placeholder") ?? String();
+        const content = input.textContent?.trim() ?? String();
         input.textContent = String();
 
         new EditorView({
@@ -75,6 +80,7 @@ const i18n = getTranslations(locale);
                 keymap.of(historyKeymap),
                 history(),
                 markdown(),
+                placeholder(fallback),
                 EditorView.updateListener.of(update => {
                     // TODO: Probably add debounce
                     if (update.docChanged || update.heightChanged) {
