@@ -36,7 +36,7 @@ const i18n = getTranslations(locale);
                     {doc.name}
                 </CardTitle>
             </CardHeader>
-            <CardContent className="prose prose-sm">
+            <CardContent className="prose">
                 <article id="output">{doc.markdown}</article>
             </CardContent>
         </Card>
@@ -46,38 +46,41 @@ const i18n = getTranslations(locale);
 <script>
     import { standardKeymap, historyKeymap, history } from "@codemirror/commands";
     import { EditorView, keymap } from "@codemirror/view";
-    import Markdoc from '@markdoc/markdoc';
+    import Markdoc from "@markdoc/markdoc";
 
-    const input = document.getElementById("input");
-    const output = document.getElementById("output");
-    if (!input || !output) throw new Error();
-
-    const markdown = input.textContent ?? String();
-    input.textContent = String();
-
-    const setHTML = (markdown: string) => {
+    const setHTML = (container: HTMLElement, markdown: string) => {
         const ast = Markdoc.parse(markdown);
         const content = Markdoc.transform(ast);
         const html = Markdoc.renderers.html(content);
-        output.innerHTML = html;
+        container.innerHTML = html;
     };
 
-    setHTML(markdown);
-    new EditorView({
-        parent: input,
-        doc: markdown,
-        extensions: [
-            EditorView.lineWrapping,
-            keymap.of(standardKeymap),
-            keymap.of(historyKeymap),
-            history(),
-            EditorView.updateListener.of(update => {
-                // TODO: Probably add debounce
-                if (update.docChanged) {
-                    setHTML(update.state.doc.toString());
-                }
-            })
-        ]
+    document.addEventListener("astro:page-load", () => {
+        if (location.pathname === "/") return;
+
+        const input = document.getElementById("input");
+        const output = document.getElementById("output");
+        if (!input || !output) throw new Error();
+
+        const markdown = input.textContent ?? String();
+        input.textContent = String();
+
+        new EditorView({
+            parent: input,
+            doc: markdown,
+            extensions: [
+                EditorView.lineWrapping,
+                keymap.of(standardKeymap),
+                keymap.of(historyKeymap),
+                history(),
+                EditorView.updateListener.of(update => {
+                    // TODO: Probably add debounce
+                    if (update.docChanged || update.heightChanged) {
+                        setHTML(output, update.state.doc.toString());
+                    }
+                })
+            ]
+        });
     });
 </script>
 
@@ -94,7 +97,7 @@ const i18n = getTranslations(locale);
         line-height: inherit;
     }
 
-    .prose h1, .prose h2, .prose h3 {
+    .prose h1, .prose h2, .prose h3, .prose p {
         margin-top: 0;
     }
 </style>
