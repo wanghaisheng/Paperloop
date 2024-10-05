@@ -19,17 +19,39 @@ const i18n = getTranslations(locale);
 <Layout title="Doc" description="Doc" locale={locale}>
     <div class="h-full flex gap-4">
         <div class="h-full flex-1" transition:name={doc.id}>
-            <Card className="h-full flex-1">
+            <Card className="h-full flex-1 bg-gray-50">
                 <CardHeader>
                     <CardTitle>
                         {doc.name}
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    {doc.markdown}
+                    <article>{doc.markdown}</article>
                 </CardContent>
             </Card>
         </div>
         <Card className="h-full flex-1"></Card>
     </div>
 </Layout>
+
+<script>
+    import { standardKeymap, historyKeymap, history } from "@codemirror/commands";
+    import { EditorView, keymap } from "@codemirror/view";
+
+    const article = document.querySelector("article");
+    if (!article) throw new Error();
+
+    const markdown = article.textContent ?? String();
+    article.textContent = String();
+
+    new EditorView({
+        parent: article,
+        doc: markdown,
+        extensions: [
+            EditorView.lineWrapping,
+            keymap.of(standardKeymap),
+            keymap.of(historyKeymap),
+            history()
+        ]
+    });
+</script>
