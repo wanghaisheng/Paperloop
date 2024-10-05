@@ -16,7 +16,7 @@ const i18n = getTranslations(locale);
 <Layout title={i18n("new-document")} description={i18n("new-document")} locale={locale}>
     <div class="grid grid-cols-3 gap-4">
         {docs.map(doc =>
-            <a href={doc.id}>
+            <a href={doc.id} transition:name={doc.id}>
                 <Card className="cursor-pointer min-h-44 hover:bg-gray-50 hover:border-gray-300">
                     <CardHeader>
                         <CardTitle>

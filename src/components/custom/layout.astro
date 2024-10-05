@@ -1,4 +1,6 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
+
 import { locales } from "@/utils/i18n.ts";
 import Navbar from "@/components/custom/navbar.astro";
 
@@ -24,6 +26,7 @@ const { title, description, locale } = Astro.props;
         <link rel="alternate" hreflang="x-default" href="https://doclino.app/" />
         <title>{title} | Doclino</title>
         <slot name="head"></slot>
+        <ViewTransitions />
     </head>
     <body class="antialiased h-full flex flex-col">
         <Navbar></Navbar>

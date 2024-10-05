@@ -18,16 +18,18 @@ const i18n = getTranslations(locale);
 
 <Layout title="Doc" description="Doc" locale={locale}>
     <div class="h-full flex gap-4">
-        <Card className="h-full flex-1">
-            <CardHeader>
-                <CardTitle>
-                    {doc.name}
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                {doc.markdown}
-            </CardContent>
-        </Card>
+        <div class="h-full flex-1" transition:name={doc.id}>
+            <Card className="h-full flex-1">
+                <CardHeader>
+                    <CardTitle>
+                        {doc.name}
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    {doc.markdown}
+                </CardContent>
+            </Card>
+        </div>
         <Card className="h-full flex-1"></Card>
     </div>
 </Layout>
