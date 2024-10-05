@@ -46,6 +46,7 @@ const i18n = getTranslations(locale);
 <script>
     import { standardKeymap, historyKeymap, history } from "@codemirror/commands";
     import { EditorView, keymap } from "@codemirror/view";
+    import { markdown } from "@codemirror/lang-markdown";
     import Markdoc from "@markdoc/markdoc";
 
     const setHTML = (container: HTMLElement, markdown: string) => {
@@ -62,17 +63,18 @@ const i18n = getTranslations(locale);
         const output = document.getElementById("output");
         if (!input || !output) throw new Error();
 
-        const markdown = input.textContent ?? String();
+        const content = input.textContent ?? String();
         input.textContent = String();
 
         new EditorView({
             parent: input,
-            doc: markdown,
+            doc: content,
             extensions: [
                 EditorView.lineWrapping,
                 keymap.of(standardKeymap),
                 keymap.of(historyKeymap),
                 history(),
+                markdown(),
                 EditorView.updateListener.of(update => {
                     // TODO: Probably add debounce
                     if (update.docChanged || update.heightChanged) {
