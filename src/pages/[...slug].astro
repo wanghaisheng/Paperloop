@@ -31,7 +31,12 @@ const i18n = getTranslations(locale);
             </Card>
         </div>
         <Card className="h-full flex-1">
-            <CardContent>
+            <CardHeader>
+                <CardTitle>
+                    {doc.name}
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="prose">
                 <article id="output">{doc.markdown}</article>
             </CardContent>
         </Card>
@@ -50,6 +55,14 @@ const i18n = getTranslations(locale);
     const markdown = input.textContent ?? String();
     input.textContent = String();
 
+    const setHTML = (markdown: string) => {
+        const ast = Markdoc.parse(markdown);
+        const content = Markdoc.transform(ast);
+        const html = Markdoc.renderers.html(content);
+        output.innerHTML = html;
+    };
+
+    setHTML(markdown);
     new EditorView({
         parent: input,
         doc: markdown,
@@ -61,12 +74,7 @@ const i18n = getTranslations(locale);
             EditorView.updateListener.of(update => {
                 // TODO: Probably add debounce
                 if (update.docChanged) {
-                    const doc = update.state.doc.toString();
-                    const ast = Markdoc.parse(doc);
-                    const content = Markdoc.transform(ast);
-                    const html = Markdoc.renderers.html(content);
-                    
-                    output.innerHTML = html;
+                    setHTML(update.state.doc.toString());
                 }
             })
         ]
