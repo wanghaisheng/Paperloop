@@ -1,7 +1,7 @@
 ---
 import "@/styles/globals.css";
 import { db, Document } from "astro:db";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 
 import Layout from "@/components/custom/layout.astro";
 import { getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
@@ -17,15 +17,22 @@ const i18n = getTranslations(locale);
     <div class="grid grid-cols-3 gap-4">
         {docs.map(doc =>
             <a href={doc.id} transition:name={doc.id}>
-                <Card className="cursor-pointer min-h-44 hover:bg-gray-50 hover:border-gray-300">
+                <Card className="flex flex-col h-full cursor-pointer hover:bg-gray-50 hover:border-gray-300">
                     <CardHeader>
                         <CardTitle>
                             {doc.name}
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className="whitespace-pre">
-                        {doc.markdown}
+                    <CardContent className="flex-1">
+                        <article class="whitespace-pre-line line-clamp-3">
+                            {doc.markdown}
+                        </article>
                     </CardContent>
+                    <CardFooter>
+                        <p class="leading-none text-sm text-gray-400">
+                            {i18n("last-edited-date")}
+                        </p>
+                    </CardFooter>
                 </Card>
             </a>
         )}
