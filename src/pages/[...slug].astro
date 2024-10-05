@@ -26,32 +26,49 @@ const i18n = getTranslations(locale);
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <article>{doc.markdown}</article>
+                    <article id="input">{doc.markdown}</article>
                 </CardContent>
             </Card>
         </div>
-        <Card className="h-full flex-1"></Card>
+        <Card className="h-full flex-1">
+            <CardContent>
+                <article id="output">{doc.markdown}</article>
+            </CardContent>
+        </Card>
     </div>
 </Layout>
 
 <script>
     import { standardKeymap, historyKeymap, history } from "@codemirror/commands";
     import { EditorView, keymap } from "@codemirror/view";
+    import Markdoc from '@markdoc/markdoc';
 
-    const article = document.querySelector("article");
-    if (!article) throw new Error();
+    const input = document.getElementById("input");
+    const output = document.getElementById("output");
+    if (!input || !output) throw new Error();
 
-    const markdown = article.textContent ?? String();
-    article.textContent = String();
+    const markdown = input.textContent ?? String();
+    input.textContent = String();
 
     new EditorView({
-        parent: article,
+        parent: input,
         doc: markdown,
         extensions: [
             EditorView.lineWrapping,
             keymap.of(standardKeymap),
             keymap.of(historyKeymap),
-            history()
+            history(),
+            EditorView.updateListener.of(update => {
+                // TODO: Probably add debounce
+                if (update.docChanged) {
+                    const doc = update.state.doc.toString();
+                    const ast = Markdoc.parse(doc);
+                    const content = Markdoc.transform(ast);
+                    const html = Markdoc.renderers.html(content);
+                    
+                    output.innerHTML = html;
+                }
+            })
         ]
     });
 </script>
