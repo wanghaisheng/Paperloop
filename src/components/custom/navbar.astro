@@ -1,0 +1,32 @@
+---
+import { FileText } from "lucide-react";
+import { getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
+
+const locale = getPreferredLocale(Astro.request.headers);
+const i18n = getTranslations(locale);
+---
+
+<header
+    class="flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6"
+>
+    <nav class="flex flex-row items-center gap-6 text-sm font-semibold">
+        <a href="/" class="flex items-center gap-2 text-base font-bold">
+            <FileText className="h-6 w-6" />
+            <span>Doclino</span>
+        </a>
+        <a
+            href="/"
+            class="hidden md:block text-foreground transition-colors hover:text-foreground"
+        >
+            {i18n("new-document")}
+        </a>
+    </nav>
+    <nav class="flex flex-row ml-auto items-center gap-6 text-sm font-semibold">
+        <a
+            href="/imprint"
+            class="text-foreground transition-colors hover:text-foreground"
+        >
+            {i18n("imprint")}
+        </a>
+    </nav>
+</header>

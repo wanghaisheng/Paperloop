@@ -1,0 +1,33 @@
+---
+import "@/styles/globals.css";
+import { db, Document } from "astro:db";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+
+import Layout from "@/components/custom/layout.astro";
+import { getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
+
+const docs = await db.select().from(Document);
+
+// Used to provide a language-specific meta alternate link for SEO
+const locale = Astro.url.searchParams.get("lang") ?? getPreferredLocale(Astro.request.headers);
+const i18n = getTranslations(locale);
+---
+
+<Layout title={i18n("new-document")} description={i18n("new-document")} locale={locale}>
+    <div class="grid grid-cols-3 gap-4">
+        {docs.map(doc =>
+            <a href={doc.id}>
+                <Card className="cursor-pointer min-h-44 hover:bg-gray-50 hover:border-gray-300">
+                    <CardHeader>
+                        <CardTitle>
+                            {doc.name}
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        {doc.markdown}
+                    </CardContent>
+                </Card>
+            </a>
+        )}
+    </div>
+</Layout>

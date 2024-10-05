@@ -1,0 +1,24 @@
+---
+interface Props {
+    text?: string;
+    help?: string;
+    class?: string;
+    tag?: string;
+}
+
+const { text, help, class: className, tag: TagName = "label" } = Astro.props;
+---
+
+<TagName class:list={[className, "flex", "flex-col", "gap-2"]}>
+    {text &&
+        <p class="font-medium">
+            {text}
+        </p>
+    }
+    <slot></slot>
+    {help &&
+        <p class="text-xs text-gray-500">
+            {help}
+        </p>
+    }
+</TagName>

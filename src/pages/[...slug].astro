@@ -1,0 +1,33 @@
+---
+import "@/styles/globals.css";
+import { db, Document, eq } from "astro:db";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+
+import Layout from "@/components/custom/layout.astro";
+import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
+
+const { slug } = Astro.params;
+if (!slug) return;
+
+const doc = await db.select().from(Document).where(eq(Document.id, slug)).get();
+if (!doc) return;
+
+const locale = getPreferredLocale(Astro.request.headers) ?? defaultLocale;
+const i18n = getTranslations(locale);
+---
+
+<Layout title="Doc" description="Doc" locale={locale}>
+    <div class="h-full flex gap-4">
+        <Card className="h-full flex-1">
+            <CardHeader>
+                <CardTitle>
+                    {doc.name}
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                {doc.markdown}
+            </CardContent>
+        </Card>
+        <Card className="h-full flex-1"></Card>
+    </div>
+</Layout>
