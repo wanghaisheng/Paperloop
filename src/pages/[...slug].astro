@@ -36,7 +36,7 @@ const i18n = getTranslations(locale);
                     {doc.name}
                 </CardTitle>
             </CardHeader>
-            <CardContent className="prose">
+            <CardContent className="prose prose-sm">
                 <article id="output">{doc.markdown}</article>
             </CardContent>
         </Card>
@@ -92,5 +92,9 @@ const i18n = getTranslations(locale);
         font-size: inherit;
         font-weight: inherit;
         line-height: inherit;
+    }
+
+    .prose h1, .prose h2, .prose h3 {
+        margin-top: 0;
     }
 </style>
