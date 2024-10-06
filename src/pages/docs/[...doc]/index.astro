@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { DocumentMenu } from "@/components/ui/document-menu";
 
 import Layout from "@/components/custom/layout.astro";
+import Particles from "@/components/custom/particles.astro";
 import ContentEditable from "@/components/custom/content-editable.astro";
 import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
@@ -20,6 +21,7 @@ const i18n = getTranslations(locale);
 ---
 
 <Layout title={entry.name} description="Doc" locale={locale}>
+    <Particles data={entry.id}></Particles>
     <div class="h-full flex gap-4">
         <div class="flex-1" transition:name={entry.id}>
             <Card className="h-full flex-1 bg-gray-50">
@@ -66,7 +68,8 @@ const i18n = getTranslations(locale);
     import { standardKeymap, historyKeymap, history } from "@codemirror/commands";
     import { EditorView, keymap, placeholder } from "@codemirror/view";
     import { markdown } from "@codemirror/lang-markdown";
-    import { debounce } from "@/utils/debounce";
+    import { getParticles } from "@/utils/particles.ts";
+    import { debounce } from "@/utils/debounce.ts";
     import markdownit from "markdown-it";
 
     import "@/components/custom/content-editable.ts";
@@ -79,9 +82,7 @@ const i18n = getTranslations(locale);
     document.addEventListener("astro:page-load", () => {
         if (location.pathname === "/") return;
 
-        const documentId = window.location.pathname.split("/").at(-1);
-        if (!documentId) return;
-
+        const id = getParticles<string>();
         const input = document.getElementById("input");
         const output = document.getElementById("output");
         if (!input || !output) throw new Error();
@@ -92,7 +93,7 @@ const i18n = getTranslations(locale);
 
         const setMarkdown = debounce((value: string) => {
             actions.updateDocument({
-                id: documentId,
+                id,
                 markdown: value
             });
         }, 1000);
@@ -127,7 +128,7 @@ const i18n = getTranslations(locale);
         nameInput?.addEventListener("blur", () => {
             if (nameInput) {
                 actions.updateDocument({
-                    id: documentId,
+                    id,
                     name: nameInput.textContent ?? String()
                 });
             }

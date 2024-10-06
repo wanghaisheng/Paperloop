@@ -1,0 +1,11 @@
+---
+import { name } from "@/utils/particles.ts";
+
+interface Props {
+    data: unknown;
+}
+
+const { data } = Astro.props;
+---
+
+<div class={name} {...{ [name]: JSON.stringify(data) }}></div>
