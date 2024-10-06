@@ -53,6 +53,8 @@ const i18n = getTranslations(locale);
     import { markdown } from "@codemirror/lang-markdown";
     import markdownit from "markdown-it";
 
+    import "@/components/lit/value-placeholder.ts";
+
     const md = markdownit({
         html: true,
         breaks: true
