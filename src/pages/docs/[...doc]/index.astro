@@ -66,6 +66,7 @@ const i18n = getTranslations(locale);
     import { standardKeymap, historyKeymap, history } from "@codemirror/commands";
     import { EditorView, keymap, placeholder } from "@codemirror/view";
     import { markdown } from "@codemirror/lang-markdown";
+    import { debounce } from "@/utils/debounce";
     import markdownit from "markdown-it";
 
     import "@/components/lit/content-editable";
@@ -78,6 +79,9 @@ const i18n = getTranslations(locale);
     document.addEventListener("astro:page-load", () => {
         if (location.pathname === "/") return;
 
+        const documentId = window.location.pathname.split("/").at(-1);
+        if (!documentId) return;
+
         const input = document.getElementById("input");
         const output = document.getElementById("output");
         if (!input || !output) throw new Error();
@@ -85,6 +89,13 @@ const i18n = getTranslations(locale);
         const fallback = input.getAttribute("data-placeholder") ?? String();
         const content = input.textContent?.trim() ?? String();
         input.textContent = String();
+
+        const setMarkdown = debounce((value: string) => {
+            actions.updateDocument({
+                id: documentId,
+                markdown: value
+            });
+        }, 1000);
 
         new EditorView({
             parent: input,
@@ -97,9 +108,9 @@ const i18n = getTranslations(locale);
                 markdown(),
                 placeholder(fallback),
                 EditorView.updateListener.of(update => {
-                    // TODO: Probably add debounce
                     if (update.docChanged || update.heightChanged) {
                         const value = update.state.doc.toString();
+                        setMarkdown(value);
 
                         // TODO: Evaluate whether to use markdown-it plugin
                         const replaced = value.replace(/\[(\S+)\]/g, (_, key) => {
@@ -115,8 +126,8 @@ const i18n = getTranslations(locale);
         const nameInput = document.querySelector("div[contenteditable]");
         nameInput?.addEventListener("blur", () => {
             if (nameInput) {
-                actions.setName({
-                    id: window.location.pathname.split("/").at(-1) ?? String(),
+                actions.updateDocument({
+                    id: documentId,
                     name: nameInput.textContent ?? String()
                 });
             }

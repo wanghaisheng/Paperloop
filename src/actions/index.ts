@@ -14,16 +14,20 @@ export const server = {
             return { id: document.id };
           },
     }),
-    setName: defineAction({
+    updateDocument: defineAction({
         accept: "json",
         input: z.object({
             id: z.string(),
-            name: z.string()
+            name: z.string().optional(),
+            markdown: z.string().optional()
         }),
-        handler: async (data) => {
+        handler: async ({ id, name, markdown }) => {
             await db.update(Document)
-                .set({ name: data.name })
-                .where(eq(Document.id, data.id));
+                .set({
+                    ...(name && { name }),
+                    ...(markdown && { markdown })
+                })
+                .where(eq(Document.id, id));
         }
     })
 }
