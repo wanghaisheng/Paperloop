@@ -1,0 +1,21 @@
+---
+import "@/styles/globals.css";
+import { db, Document, eq } from "astro:db";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+
+import Layout from "@/components/custom/layout.astro";
+import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
+
+const { doc } = Astro.params;
+if (!doc) return;
+
+const entry = await db.select().from(Document).where(eq(Document.id, doc)).get();
+if (!entry) return;
+
+const locale = getPreferredLocale(Astro.request.headers) ?? defaultLocale;
+const i18n = getTranslations(locale);
+---
+
+<Layout title="Doc" description="Doc" locale={locale}>
+    Version of {entry.name}
+</Layout>

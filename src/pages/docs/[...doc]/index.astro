@@ -6,11 +6,11 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Layout from "@/components/custom/layout.astro";
 import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
-const { slug } = Astro.params;
-if (!slug) return;
-
-const doc = await db.select().from(Document).where(eq(Document.id, slug)).get();
+const { doc } = Astro.params;
 if (!doc) return;
+
+const entry = await db.select().from(Document).where(eq(Document.id, doc)).get();
+if (!entry) return;
 
 const locale = getPreferredLocale(Astro.request.headers) ?? defaultLocale;
 const i18n = getTranslations(locale);
@@ -18,16 +18,16 @@ const i18n = getTranslations(locale);
 
 <Layout title="Doc" description="Doc" locale={locale}>
     <div class="h-full flex gap-4">
-        <div class="h-full flex-1" transition:name={doc.id}>
+        <div class="h-full flex-1" transition:name={entry.id}>
             <Card className="h-full flex-1 bg-gray-50">
                 <CardHeader>
                     <CardTitle>
-                        {doc.name}
+                        {entry.name}
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
                     <article id="input" data-placeholder={i18n("write-something")}>
-                        {doc.markdown}
+                        {entry.markdown}
                     </article>
                 </CardContent>
             </Card>
@@ -40,7 +40,7 @@ const i18n = getTranslations(locale);
             </CardHeader>
             <CardContent className="prose">
                 <article id="output">
-                    {doc.markdown}
+                    {entry.markdown}
                 </article>
             </CardContent>
         </Card>
