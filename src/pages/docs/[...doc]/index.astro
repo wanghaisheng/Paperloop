@@ -2,6 +2,7 @@
 import "@/styles/globals.css";
 import { db, Document, eq } from "astro:db";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { DocumentMenu } from "@/components/ui/document-menu";
 
 import Layout from "@/components/custom/layout.astro";
 import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
@@ -21,8 +22,9 @@ const i18n = getTranslations(locale);
         <div class="h-full flex-1" transition:name={entry.id}>
             <Card className="h-full flex-1 bg-gray-50">
                 <CardHeader>
-                    <CardTitle>
+                    <CardTitle className="flex items-center justify-between">
                         {entry.name}
+                        <DocumentMenu id={entry.id} client:load></DocumentMenu>
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
