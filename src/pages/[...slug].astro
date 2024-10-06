@@ -51,14 +51,12 @@ const i18n = getTranslations(locale);
     import { standardKeymap, historyKeymap, history } from "@codemirror/commands";
     import { EditorView, keymap, placeholder } from "@codemirror/view";
     import { markdown } from "@codemirror/lang-markdown";
-    import Markdoc from "@markdoc/markdoc";
+    import markdownit from "markdown-it";
 
-    const setHTML = (container: HTMLElement, markdown: string) => {
-        const ast = Markdoc.parse(markdown);
-        const content = Markdoc.transform(ast);
-        const html = Markdoc.renderers.html(content);
-        container.innerHTML = html;
-    };
+    const md = markdownit({
+        html: true,
+        breaks: true
+    });
 
     document.addEventListener("astro:page-load", () => {
         if (location.pathname === "/") return;
@@ -84,7 +82,8 @@ const i18n = getTranslations(locale);
                 EditorView.updateListener.of(update => {
                     // TODO: Probably add debounce
                     if (update.docChanged || update.heightChanged) {
-                        setHTML(output, update.state.doc.toString());
+                        const value = update.state.doc.toString();
+                        output.innerHTML = md.render(value);
                     }
                 })
             ]
