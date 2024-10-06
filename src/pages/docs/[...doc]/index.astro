@@ -2,6 +2,7 @@
 import "@/styles/globals.css";
 import { db, Document, eq } from "astro:db";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { DocumentMenu } from "@/components/ui/document-menu";
 
 import Layout from "@/components/custom/layout.astro";
@@ -19,11 +20,19 @@ const i18n = getTranslations(locale);
 
 <Layout title="Doc" description="Doc" locale={locale}>
     <div class="h-full flex gap-4">
-        <div class="h-full flex-1" transition:name={entry.id}>
+        <div class="flex-1" transition:name={entry.id}>
             <Card className="h-full flex-1 bg-gray-50">
                 <CardHeader>
                     <CardTitle className="flex items-center justify-between">
-                        {entry.name}
+                        <div class="flex items-center gap-2">
+                            {entry.name}
+                            <Badge variant="outline" className="bg-white">
+                                {entry.version
+                                    ? `${i18n("version")} ${entry.version}`
+                                    : i18n("draft")
+                                }
+                            </Badge>
+                        </div>
                         <DocumentMenu id={entry.id} client:load></DocumentMenu>
                     </CardTitle>
                 </CardHeader>

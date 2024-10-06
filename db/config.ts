@@ -3,8 +3,10 @@ import { defineDb, defineTable, column } from "astro:db";
 const Document = defineTable({
     columns: {
         id: column.text({ primaryKey: true }),
-        name: column.text(),
-        markdown: column.text()
+        name: column.text({ default: String() }),
+        markdown: column.text({ default: String() }),
+        version: column.number({ optional: true }),
+        document: column.text()
     }
 });
 
