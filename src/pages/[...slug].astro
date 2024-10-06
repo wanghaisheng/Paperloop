@@ -53,7 +53,7 @@ const i18n = getTranslations(locale);
     import { markdown } from "@codemirror/lang-markdown";
     import markdownit from "markdown-it";
 
-    import "@/components/lit/value-placeholder.ts";
+    import "@/components/lit/content-editable";
 
     const md = markdownit({
         html: true,
@@ -85,7 +85,13 @@ const i18n = getTranslations(locale);
                     // TODO: Probably add debounce
                     if (update.docChanged || update.heightChanged) {
                         const value = update.state.doc.toString();
-                        output.innerHTML = md.render(value);
+
+                        // TODO: Evaluate whether to use markdown-it plugin
+                        const replaced = value.replace(/\[(\S+)\]/g, (_, key) => {
+                            return `<content-editable placeholder=${key}></content-editable>`;
+                        });
+
+                        output.innerHTML = md.render(replaced);
                     }
                 })
             ]
