@@ -1,0 +1,21 @@
+---
+interface Props {
+    placeholder: string;
+}
+
+const { placeholder } = Astro.props;
+---
+
+<div data-placeholder={placeholder} contenteditable="true"><slot></slot></div>
+
+<style>
+    [contenteditable] {
+        outline: none;
+        cursor: text;
+    }
+
+    [contenteditable]:empty:before {
+        content: attr(data-placeholder);
+        color: var(--placeholder-color);
+    }
+</style>
