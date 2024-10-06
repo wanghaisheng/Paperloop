@@ -137,10 +137,6 @@ const i18n = getTranslations(locale);
 </script>
 
 <style is:inline>
-    :root {
-        --placeholder-color: silver;
-    }
- 
     .cm-editor.cm-focused {
         outline: none;
     }
@@ -151,10 +147,11 @@ const i18n = getTranslations(locale);
         font-size: inherit;
         font-weight: inherit;
         line-height: inherit;
+        caret-color: inherit;
     }
 
     .cm-editor .cm-placeholder {
-        color: var(--placeholder-color);
+        color: hsl(var(--placeholder));
     }
 
     .prose h1, .prose h2, .prose h3, .prose p {

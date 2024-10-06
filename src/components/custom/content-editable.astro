@@ -16,6 +16,6 @@ const { placeholder } = Astro.props;
 
     [contenteditable]:empty:before {
         content: attr(data-placeholder);
-        color: var(--placeholder-color);
+        color: hsl(var(--placeholder));
     }
 </style>

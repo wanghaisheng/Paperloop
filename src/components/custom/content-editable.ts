@@ -17,7 +17,7 @@ class ContentEditable extends HTMLElement {
 
             [contenteditable]:empty:before {
                 content: attr(placeholder);
-                color: var(--placeholder-color);
+                color: hsl(var(--placeholder));
             }
         `;
     }
