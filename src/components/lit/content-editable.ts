@@ -18,7 +18,7 @@ export class ContentEditable extends LitElement {
 
         [contenteditable]:empty:before {
             content: attr(placeholder);
-            color: silver;
+            color: var(--placeholder-color);
         }
     `;
 
