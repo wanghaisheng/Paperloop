@@ -1,5 +1,6 @@
 ---
-import { FileText } from "lucide-react";
+import { FileText, CirclePlus } from "lucide-react";
+import { Button } from "../ui/button";
 import { getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
 const locale = getPreferredLocale(Astro.request.headers);
@@ -22,11 +23,21 @@ const i18n = getTranslations(locale);
         </a>
     </nav>
     <nav class="flex flex-row ml-auto items-center gap-6 text-sm font-semibold">
-        <a
-            href="/imprint"
-            class="text-foreground transition-colors hover:text-foreground"
-        >
-            {i18n("imprint")}
-        </a>
+        <Button size="sm">
+            <CirclePlus className="mr-2 h-4 w-4" />
+            <span>{i18n("create")}</span>
+        </Button>
     </nav>
 </header>
+
+<script>
+    import { actions } from "astro:actions";
+    import { navigate } from "astro:transitions/client";
+
+    document.addEventListener("astro:page-load", () => {
+        document.querySelector("button")?.addEventListener("click", async () => {
+            const { data, error } = await actions.createDocument();
+            if (!error) navigate(`/docs/${data.id}`);
+        });
+    });
+</script>
