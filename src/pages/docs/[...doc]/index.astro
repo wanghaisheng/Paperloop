@@ -85,7 +85,7 @@ const i18n = getTranslations(locale);
         const id = getParticles<string>();
         const input = document.getElementById("input");
         const output = document.getElementById("output");
-        if (!input || !output) throw new Error();
+        if (!input || !output) return;
 
         const fallback = input.getAttribute("data-placeholder") ?? String();
         const content = input.textContent?.trim() ?? String();
@@ -111,7 +111,7 @@ const i18n = getTranslations(locale);
                 EditorView.updateListener.of(update => {
                     if (update.docChanged || update.heightChanged) {
                         const value = update.state.doc.toString();
-                        setMarkdown(value);
+                        if (update.docChanged) setMarkdown(value);
 
                         // TODO: Evaluate whether to use markdown-it plugin
                         const replaced = value.replace(/\[(\S+)\]/g, (_, key) => {
