@@ -23,10 +23,7 @@ export const server = {
         }),
         handler: async ({ id, name, markdown }) => {
             await db.update(Document)
-                .set({
-                    ...(name && { name }),
-                    ...(markdown && { markdown })
-                })
+                .set({ name, markdown })
                 .where(eq(Document.id, id));
         }
     }),
