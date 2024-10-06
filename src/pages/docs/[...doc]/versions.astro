@@ -31,7 +31,7 @@ const i18n = getTranslations(locale);
                         <CardTitle>
                             <div class="flex items-center gap-2">
                             {entry.name}
-                            <Badge variant="outline" className="bg-white">
+                            <Badge variant="outline">
                                 {doc.version
                                     ? `${i18n("version")} ${doc.version}`
                                     : i18n("draft")

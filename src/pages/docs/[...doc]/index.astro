@@ -24,14 +24,14 @@ const i18n = getTranslations(locale);
     <Particles data={entry.id}></Particles>
     <div class="h-full flex gap-4">
         <div class="flex-1" transition:name={entry.id}>
-            <Card className="h-full flex-1 bg-gray-50">
+            <Card className="h-full flex-1">
                 <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <ContentEditable placeholder={i18n("new-document")}>
                                 {entry.name}
                             </ContentEditable>
-                            <Badge variant="outline" className="bg-white">
+                            <Badge variant="outline">
                                 {entry.version
                                     ? `${i18n("version")} ${entry.version}`
                                     : i18n("draft")
@@ -54,7 +54,7 @@ const i18n = getTranslations(locale);
                     {i18n("preview")}
                 </CardTitle>
             </CardHeader>
-            <CardContent className="prose">
+            <CardContent className="prose dark:prose-invert">
                 <article id="output">
                     {entry.markdown}
                 </article>

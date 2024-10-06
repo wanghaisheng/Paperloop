@@ -21,10 +21,10 @@ const i18n = getTranslations(locale);
     <div class="grid grid-cols-3 gap-4">
         {highesVersions.map(doc =>
             <a href={"docs/" + doc.id} transition:name={doc.id}>
-                <Card className="flex flex-col h-full cursor-pointer hover:bg-gray-50 hover:border-gray-300">
+                <Card className="flex flex-col h-full cursor-pointer">
                     <CardHeader>
                         <CardTitle>
-                            {doc.name}
+                            {doc.name || i18n("new-document")}
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="flex-1">
