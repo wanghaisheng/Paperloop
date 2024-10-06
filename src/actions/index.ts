@@ -29,5 +29,12 @@ export const server = {
                 })
                 .where(eq(Document.id, id));
         }
+    }),
+    deleteDocument: defineAction({
+        accept: "json",
+        input: z.string(),
+        handler: async (id) => {
+            await db.delete(Document).where(eq(Document.id, id));
+        }
     })
 }

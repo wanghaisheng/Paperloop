@@ -1,3 +1,5 @@
+import { actions } from "astro:actions";
+import { navigate } from "astro:transitions/client";
 import { Ellipsis, History, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -29,7 +31,10 @@ export const DocumentMenu = ({ id }: { id: string }) => {
                         Versions
                     </DropdownMenuItem>
                 </a>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={async () => {
+                    const { error } = await actions.deleteDocument(id);
+                    if (!error) navigate("/docs");
+                }}>
                     <Trash className="mr-2 h-4 w-4" />
                     Delete
                 </DropdownMenuItem>
