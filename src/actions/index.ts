@@ -39,6 +39,18 @@ export const server = {
             await db.update(Document).set({ version }).where(eq(Document.id, id));
         }
     }),
+    duplicateDocument: defineAction({
+        accept: "json",
+        input: z.string(),
+        handler: async (id) => {
+            const [current] = await db.select().from(Document).where(eq(Document.id, id));
+            await db.insert(Document).values({
+                ...current,
+                id: crypto.randomUUID(),
+                version: undefined
+            });
+        }
+    }),
     deleteDocument: defineAction({
         accept: "json",
         input: z.string(),
