@@ -19,9 +19,11 @@ const i18n = getTranslations(locale);
 ---
 
 <CardTitle className="flex items-center justify-between">
-    <a href={`/docs/${doc.id}`} class="flex items-center gap-2">
+    <div class="flex items-center gap-2">
         <slot name="title">
-            {doc.name || i18n("new-document")}
+            <a href={`/docs/${doc.id}`}>
+                {doc.name || i18n("new-document")}
+            </a>
         </slot>
         <Badge variant="secondary">
             {doc.version
@@ -29,6 +31,6 @@ const i18n = getTranslations(locale);
                 : i18n("draft")
             }
         </Badge>
-    </a>
+    </div>
     <slot name="actions"></slot>
 </CardTitle>
