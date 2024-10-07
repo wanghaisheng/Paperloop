@@ -28,7 +28,7 @@ const i18n = getTranslations(locale);
                 <Card className="flex flex-col h-full overflow-auto cursor-pointer">
                     <CardHeader>
                         <DocumentHeader doc={doc}>
-                            <DocumentMenu slot="actions" id={entry.id} client:only></DocumentMenu>
+                            <DocumentMenu slot="actions" id={entry.id} client:only="react"></DocumentMenu>
                         </DocumentHeader>
                     </CardHeader>
                     <CardContent className="flex-1">
