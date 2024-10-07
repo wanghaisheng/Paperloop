@@ -35,3 +35,14 @@ const { title, description, locale } = Astro.props;
         </main>
     </body>
 </html>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        document.querySelectorAll("time").forEach(time => {
+            time.textContent = new Date(time.dateTime).toLocaleString(undefined, {
+                dateStyle: "medium",
+                timeStyle: "short"
+            });
+        });
+    });
+</script>

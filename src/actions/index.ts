@@ -36,9 +36,12 @@ export const server = {
             const [current] = await db.select().from(Document).where(eq(Document.id, id));
             const versions = await db.select().from(Document).where(eq(Document.document, current.document));
 
-            // TODO: Evaluate whether to get max version number with query
-            const version = Math.max(...versions.map(entry => entry.version ?? 0), 0) + 1;
-            await db.update(Document).set({ version }).where(eq(Document.id, id));
+            await db.update(Document)
+                .set({
+                    version: Math.max(...versions.map(entry => entry.version ?? 0), 0) + 1,
+                    updated: new Date()
+                })
+                .where(eq(Document.id, id));
         }
     }),
     duplicateDocument: defineAction({
@@ -49,7 +52,8 @@ export const server = {
             await db.insert(Document).values({
                 ...current,
                 id: crypto.randomUUID(),
-                version: undefined
+                version: undefined,
+                updated: new Date()
             });
         }
     }),
