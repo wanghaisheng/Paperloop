@@ -6,6 +6,7 @@ import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n
 // TODO: Defer type from db
 interface Props {
     doc: {
+        id: string;
         name: string;
         version: number | null;
     };
@@ -18,7 +19,7 @@ const i18n = getTranslations(locale);
 ---
 
 <CardTitle className="flex items-center justify-between">
-    <div class="flex items-center gap-2">
+    <a href={`/docs/${doc.id}`} class="flex items-center gap-2">
         <slot name="title">
             {doc.name || i18n("new-document")}
         </slot>
@@ -28,6 +29,6 @@ const i18n = getTranslations(locale);
                 : i18n("draft")
             }
         </Badge>
-    </div>
+    </a>
     <slot name="actions"></slot>
 </CardTitle>
