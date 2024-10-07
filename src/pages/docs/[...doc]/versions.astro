@@ -1,12 +1,10 @@
 ---
 import "@/styles/globals.css";
 import { db, Document, eq } from "astro:db";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-
-// TODO: Add reusable document-header and remove here
-import { Badge } from "@/components/ui/badge";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 
 import Layout from "@/components/custom/layout.astro";
+import DocumentHeader from "@/components/custom/document-header.astro";
 import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
 const { doc } = Astro.params;
@@ -26,19 +24,9 @@ const i18n = getTranslations(locale);
     <div class="h-full flex justify-end gap-4">
         {docs.map(doc =>
             <a href={`/docs/${doc.id}`} class="w-1/3" transition:name={doc.id}>
-                <Card className="flex flex-col h-full cursor-pointer">
+                <Card className="flex flex-col h-full overflow-auto cursor-pointer">
                     <CardHeader>
-                        <CardTitle>
-                            <div class="flex items-center gap-2">
-                            {entry.name}
-                            <Badge variant="secondary">
-                                {doc.version
-                                    ? `${i18n("version")} ${doc.version}`
-                                    : i18n("draft")
-                                }
-                            </Badge>
-                        </div>
-                        </CardTitle>
+                        <DocumentHeader doc={doc}></DocumentHeader>
                     </CardHeader>
                     <CardContent className="flex-1">
                         <article class="whitespace-pre-line">

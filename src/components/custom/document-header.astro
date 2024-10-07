@@ -1,0 +1,35 @@
+---
+import { CardTitle } from "../ui/card";
+import { Badge } from "@/components/ui/badge";
+
+import ContentEditable from "@/components/custom/content-editable.astro";
+import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
+
+// TODO: Defer type from db
+interface Props {
+    doc: {
+        name: string;
+        version: number | null;
+    };
+}
+
+const { doc } = Astro.props;
+
+const locale = getPreferredLocale(Astro.request.headers) ?? defaultLocale;
+const i18n = getTranslations(locale);
+---
+
+<CardTitle className="flex items-center justify-between">
+    <div class="flex items-center gap-2">
+        <ContentEditable placeholder={i18n("new-document")}>
+            {doc.name}
+        </ContentEditable>
+        <Badge variant="secondary">
+            {doc.version
+                ? `${i18n("version")} ${doc.version}`
+                : i18n("draft")
+            }
+        </Badge>
+    </div>
+    <slot></slot>
+</CardTitle>

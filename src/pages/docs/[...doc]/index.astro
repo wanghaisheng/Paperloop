@@ -2,12 +2,11 @@
 import "@/styles/globals.css";
 import { db, Document, eq } from "astro:db";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { DocumentMenu } from "@/components/ui/document-menu";
 
 import Layout from "@/components/custom/layout.astro";
 import Particles from "@/components/custom/particles.astro";
-import ContentEditable from "@/components/custom/content-editable.astro";
+import DocumentHeader from "@/components/custom/document-header.astro";
 import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
 const { doc } = Astro.params;
@@ -26,20 +25,9 @@ const i18n = getTranslations(locale);
         <div class="flex-1" transition:name={entry.id}>
             <Card className="h-full flex-1 overflow-auto">
                 <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <ContentEditable placeholder={i18n("new-document")}>
-                                {entry.name}
-                            </ContentEditable>
-                            <Badge variant="secondary">
-                                {entry.version
-                                    ? `${i18n("version")} ${entry.version}`
-                                    : i18n("draft")
-                                }
-                            </Badge>
-                        </div>
+                    <DocumentHeader doc={entry}>
                         <DocumentMenu id={entry.id} client:load></DocumentMenu>
-                    </CardTitle>
+                    </DocumentHeader>
                 </CardHeader>
                 <CardContent>
                     <article id="input" data-placeholder={i18n("write-something")}>
