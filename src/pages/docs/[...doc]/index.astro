@@ -31,7 +31,7 @@ const i18n = getTranslations(locale);
                             <ContentEditable placeholder={i18n("new-document")}>
                                 {entry.name}
                             </ContentEditable>
-                            <Badge variant="outline">
+                            <Badge variant="secondary">
                                 {entry.version
                                     ? `${i18n("version")} ${entry.version}`
                                     : i18n("draft")
