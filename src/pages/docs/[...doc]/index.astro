@@ -24,7 +24,7 @@ const i18n = getTranslations(locale);
     <Particles data={entry.id}></Particles>
     <div class="h-full flex gap-4">
         <div class="flex-1" transition:name={entry.id}>
-            <Card className="h-full flex-1">
+            <Card className="h-full flex-1 overflow-auto">
                 <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                         <div class="flex items-center gap-2">
@@ -48,7 +48,7 @@ const i18n = getTranslations(locale);
                 </CardContent>
             </Card>
         </div>
-        <Card className="h-full flex-1">
+        <Card className="h-full flex-1 overflow-auto">
             <CardHeader>
                 <CardTitle>
                     {i18n("preview")}

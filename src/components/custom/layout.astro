@@ -30,7 +30,7 @@ const { title, description, locale } = Astro.props;
     </head>
     <body class="antialiased h-full flex flex-col">
         <Navbar></Navbar>
-        <main class="flex-1 p-8">
+        <main class="flex-1 p-8 overflow-hidden">
             <slot></slot>
         </main>
     </body>
