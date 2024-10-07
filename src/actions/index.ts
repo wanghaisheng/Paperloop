@@ -8,7 +8,8 @@ export const server = {
         handler: async () => {
             const [document] = await db.insert(Document).values({
                 id: crypto.randomUUID(),
-                document: crypto.randomUUID()
+                document: crypto.randomUUID(),
+                updated: new Date()
             }).returning();
 
             return { id: document.id };
@@ -19,11 +20,12 @@ export const server = {
         input: z.object({
             id: z.string(),
             name: z.string().optional(),
-            markdown: z.string().optional()
+            markdown: z.string().optional(),
+            updated: z.date().optional()
         }),
-        handler: async ({ id, name, markdown }) => {
+        handler: async ({ id, name, markdown, updated = new Date() }) => {
             await db.update(Document)
-                .set({ name, markdown })
+                .set({ name, markdown, updated })
                 .where(eq(Document.id, id));
         }
     }),
