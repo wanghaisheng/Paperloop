@@ -30,9 +30,9 @@ const i18n = getTranslations(locale);
                         <DocumentHeader doc={doc}>
                             <DocumentMenu
                                 slot="actions"
-                                id={entry.id}
-                                document={entry.document}
-                                version={entry.version}
+                                id={doc.id}
+                                document={doc.document}
+                                version={doc.version}
                                 client:only="react"
                             ></DocumentMenu>
                         </DocumentHeader>

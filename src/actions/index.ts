@@ -27,6 +27,18 @@ export const server = {
                 .where(eq(Document.id, id));
         }
     }),
+    publishDocument: defineAction({
+        accept: "json",
+        input: z.string(),
+        handler: async (id) => {
+            const [current] = await db.select().from(Document).where(eq(Document.id, id));
+            const versions = await db.select().from(Document).where(eq(Document.document, current.document));
+
+            // TODO: Evaluate whether to get max version number with query
+            const version = Math.max(...versions.map(entry => entry.version ?? 0), 0) + 1;
+            await db.update(Document).set({ version }).where(eq(Document.id, id));
+        }
+    }),
     deleteDocument: defineAction({
         accept: "json",
         input: z.string(),

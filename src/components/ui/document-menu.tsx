@@ -31,8 +31,9 @@ export const DocumentMenu = ({ id, document, version }: { id: string, document: 
                     }}>
                         <Pen className="h-4 w-4" />
                     </Button>
-                    : <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => {
-                        navigate(`/docs/versions/${document}`);
+                    : <Button size="icon" variant="ghost" className="h-6 w-6" onClick={async () => {
+                        const { error } = await actions.publishDocument(id);
+                        if (!error) setTimeout(() => location.reload(), 250);
                     }}>
                         <CircleCheck className="h-4 w-4" />
                     </Button>
