@@ -21,25 +21,23 @@ const i18n = getTranslations(locale);
 <Layout title={i18n("new-document")} description={i18n("new-document")} locale={locale}>
     <div class="grid grid-cols-3 gap-4">
         {highesVersions.map(doc =>
-            <div transition:name={doc.id}>
+            <a href={"docs/" + doc.id} transition:name={doc.id}>
                 <Card className="flex flex-col h-full cursor-pointer">
                     <CardHeader>
                         <DocumentHeader doc={doc}></DocumentHeader>
                     </CardHeader>
-                    <a href={`/docs/${doc.id}`} class="flex-1">
-                        <CardContent>
-                            <article class="whitespace-pre-line line-clamp-3">
-                                {doc.markdown}
-                            </article>
-                        </CardContent>
-                    </a>
+                    <CardContent className="flex-1">
+                        <article class="whitespace-pre-line line-clamp-3">
+                            {doc.markdown}
+                        </article>
+                    </CardContent>
                     <CardFooter>
                         <p class="leading-none text-sm text-gray-400">
                             {i18n("last-edited-date")}
                         </p>
                     </CardFooter>
                 </Card>
-            </div>
+            </a>
         )}
     </div>
 </Layout>

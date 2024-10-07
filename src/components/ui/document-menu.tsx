@@ -17,12 +17,12 @@ import {
 
 export const DocumentMenu = ({ id }: { id: string }) => {
     return (
-        <div className="flex gap-2">
-            <a href={id + "/versions"}>
-                <Button size="icon" variant="ghost" className="h-6 w-6">
-                    <History className="h-4 w-4" />
-                </Button>
-            </a>
+        <div className="flex gap-2" onClick={event => event.preventDefault()}>
+            <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => {
+                navigate(`/docs/${id}/versions`);
+            }}>
+                <History className="h-4 w-4" />
+            </Button>
             <AlertDialog>
                 <AlertDialogTrigger asChild>
                     <Button size="icon" variant="ghost" className="h-6 w-6">
