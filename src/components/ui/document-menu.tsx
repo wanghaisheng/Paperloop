@@ -1,6 +1,6 @@
 import { actions } from "astro:actions";
 import { navigate } from "astro:transitions/client";
-import { History, Trash } from "lucide-react";
+import { History, Pen, CircleCheck, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -13,16 +13,30 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-  } from "@/components/ui/alert-dialog";
+} from "@/components/ui/alert-dialog";
 
-export const DocumentMenu = ({ id }: { id: string }) => {
+export const DocumentMenu = ({ id, version }: { id: string, version: number | null }) => {
+    const versionsView = window.location.pathname.includes("versions");
     return (
         <div className="flex gap-2" onClick={event => event.preventDefault()}>
-            <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => {
-                navigate(`/docs/${id}/versions`);
-            }}>
-                <History className="h-4 w-4" />
-            </Button>
+            {!versionsView
+                ? <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => {
+                    navigate(`/docs/${id}/versions`);
+                }}>
+                    <History className="h-4 w-4" />
+                </Button>
+                : version
+                    ? <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => {
+                        navigate(`/docs/${id}/versions`);
+                    }}>
+                        <Pen className="h-4 w-4" />
+                    </Button>
+                    : <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => {
+                        navigate(`/docs/${id}/versions`);
+                    }}>
+                        <CircleCheck className="h-4 w-4" />
+                    </Button>
+            }
             <AlertDialog>
                 <AlertDialogTrigger asChild>
                     <Button size="icon" variant="ghost" className="h-6 w-6">

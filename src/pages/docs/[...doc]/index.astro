@@ -30,7 +30,7 @@ const i18n = getTranslations(locale);
                         <ContentEditable slot="title" placeholder={i18n("new-document")}>
                             {entry.name}
                         </ContentEditable>
-                        <DocumentMenu slot="actions" id={entry.id} client:only="react"></DocumentMenu>
+                        <DocumentMenu slot="actions" id={entry.id} version={entry.version} client:only="react"></DocumentMenu>
                     </DocumentHeader>
                 </CardHeader>
                 <CardContent>
