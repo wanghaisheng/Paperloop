@@ -1,7 +1,7 @@
 import { actions } from "astro:actions";
 import { navigate } from "astro:transitions/client";
-import { History, Pen, CircleCheck, Trash } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { History, Pencil, CircleCheck, Trash } from "lucide-react";
+import { IconButton } from "./icon-button";
 
 import {
     AlertDialog,
@@ -15,35 +15,34 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-export const DocumentMenu = ({ id, document, version }: { id: string, document: string, version: number | null }) => {
+interface DocumentMenuProps {
+    id: string,
+    document: string,
+    version: number | null,
+    translations: Record<string, string>;
+};
+
+export const DocumentMenu = ({ id, document, version, translations }: DocumentMenuProps) => {
     const versionsView = window.location.pathname.includes("versions");
     return (
         <div className="flex gap-2" onClick={event => event.preventDefault()}>
             {!versionsView
-                ? <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => {
+                ? <IconButton icon={History} tooltip={translations["client-history"]} onClick={() => {
                     navigate(`/docs/versions/${document}`);
-                }}>
-                    <History className="h-4 w-4" />
-                </Button>
+                }}></IconButton>
                 : version
-                    ? <Button size="icon" variant="ghost" className="h-6 w-6" onClick={async () => {
+                    ? <IconButton icon={Pencil} tooltip={translations["client-edit"]} onClick={async () => {
                         const { error } = await actions.duplicateDocument(id);
                         if (!error) setTimeout(() => navigate(""), 250);
-                    }}>
-                        <Pen className="h-4 w-4" />
-                    </Button>
-                    : <Button size="icon" variant="ghost" className="h-6 w-6" onClick={async () => {
+                    }}></IconButton>
+                    : <IconButton icon={CircleCheck} tooltip={translations["client-release"]} onClick={async () => {
                         const { error } = await actions.publishDocument(id);
                         if (!error) setTimeout(() => navigate(""), 250);
-                    }}>
-                        <CircleCheck className="h-4 w-4" />
-                    </Button>
+                    }}></IconButton>
             }
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <Button size="icon" variant="ghost" className="h-6 w-6">
-                        <Trash className="h-4 w-4" />
-                    </Button>
+                    <IconButton icon={Trash} tooltip={translations["client-delete"]}></IconButton>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>

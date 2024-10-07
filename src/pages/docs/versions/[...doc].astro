@@ -6,7 +6,7 @@ import { DocumentMenu } from "@/components/ui/document-menu";
 
 import Layout from "@/components/custom/layout.astro";
 import DocumentHeader from "@/components/custom/document-header.astro";
-import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
+import { defaultLocale, getClientTranslations, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
 const { doc } = Astro.params;
 if (!doc) return;
@@ -19,6 +19,9 @@ if (!docs) return;
 
 const locale = getPreferredLocale(Astro.request.headers) ?? defaultLocale;
 const i18n = getTranslations(locale);
+
+// TODO: Move DocumentMenu to a reusable component and remove here
+const client = getClientTranslations(locale);
 ---
 
 <Layout title="Doc" description="Doc" locale={locale}>
@@ -33,6 +36,7 @@ const i18n = getTranslations(locale);
                                 id={doc.id}
                                 document={doc.document}
                                 version={doc.version}
+                                translations={client}
                                 client:only="react"
                             ></DocumentMenu>
                         </DocumentHeader>

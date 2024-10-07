@@ -8,7 +8,7 @@ import Layout from "@/components/custom/layout.astro";
 import Particles from "@/components/custom/particles.astro";
 import DocumentHeader from "@/components/custom/document-header.astro";
 import ContentEditable from "@/components/custom/content-editable.astro";
-import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
+import { defaultLocale, getClientTranslations, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
 const { doc } = Astro.params;
 if (!doc) return;
@@ -18,6 +18,9 @@ if (!entry) return;
 
 const locale = getPreferredLocale(Astro.request.headers) ?? defaultLocale;
 const i18n = getTranslations(locale);
+
+// TODO: Move DocumentMenu to a reusable component and remove here
+const client = getClientTranslations(locale);
 ---
 
 <Layout title={entry.name} description="Doc" locale={locale}>
@@ -35,6 +38,7 @@ const i18n = getTranslations(locale);
                             id={entry.id}
                             document={entry.document}
                             version={entry.version}
+                            translations={client}
                             client:only="react"
                         ></DocumentMenu>
                     </DocumentHeader>

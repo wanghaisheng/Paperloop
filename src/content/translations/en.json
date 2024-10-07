@@ -2,6 +2,12 @@
     "my-documents": "My documents",
     "new-document": "New document",
     "write-something": "Write something ...",
+    "draft": "Entwurf",
+    "version": "Version",
     "preview": "Preview",
-    "imprint": "Imprint"
+    "imprint": "Imprint",
+    "client-history": "History",
+    "client-edit": "Edit",
+    "client-release": "Release",
+    "client-delete": "Delete"
 }
