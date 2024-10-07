@@ -11,7 +11,7 @@ import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n
 const { doc } = Astro.params;
 if (!doc) return;
 
-const entry = await db.select().from(Document).where(eq(Document.id, doc)).get();
+const entry = await db.select().from(Document).where(eq(Document.document, doc)).get();
 if (!entry) return;
 
 const docs = await db.select().from(Document).where(eq(Document.document, entry.document));
@@ -28,7 +28,13 @@ const i18n = getTranslations(locale);
                 <Card className="flex flex-col h-full overflow-auto cursor-pointer">
                     <CardHeader>
                         <DocumentHeader doc={doc}>
-                            <DocumentMenu slot="actions" id={doc.id} version={doc.version} client:only="react"></DocumentMenu>
+                            <DocumentMenu
+                                slot="actions"
+                                id={entry.id}
+                                document={entry.document}
+                                version={entry.version}
+                                client:only="react"
+                            ></DocumentMenu>
                         </DocumentHeader>
                     </CardHeader>
                     <CardContent className="flex-1">

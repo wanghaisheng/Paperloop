@@ -31,7 +31,17 @@ export const server = {
         accept: "json",
         input: z.string(),
         handler: async (id) => {
-            await db.delete(Document).where(eq(Document.id, id));
+            const [deleted] = await db.delete(Document).where(eq(Document.id, id)).returning();
+            const remaining = await db.select().from(Document).where(eq(Document.document, deleted.document));
+            return remaining.length ? `/docs/versions/${deleted.document}` : "/docs";
+        }
+    }),
+    deleteDocuments: defineAction({
+        accept: "json",
+        input: z.string(),
+        handler: async (document) => {
+            await db.delete(Document).where(eq(Document.document, document));
+            return "/docs";
         }
     })
 }

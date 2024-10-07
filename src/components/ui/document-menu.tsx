@@ -15,24 +15,24 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-export const DocumentMenu = ({ id, version }: { id: string, version: number | null }) => {
+export const DocumentMenu = ({ id, document, version }: { id: string, document: string, version: number | null }) => {
     const versionsView = window.location.pathname.includes("versions");
     return (
         <div className="flex gap-2" onClick={event => event.preventDefault()}>
             {!versionsView
                 ? <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => {
-                    navigate(`/docs/${id}/versions`);
+                    navigate(`/docs/versions/${document}`);
                 }}>
                     <History className="h-4 w-4" />
                 </Button>
                 : version
                     ? <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => {
-                        navigate(`/docs/${id}/versions`);
+                        navigate(`/docs/versions/${document}`);
                     }}>
                         <Pen className="h-4 w-4" />
                     </Button>
                     : <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => {
-                        navigate(`/docs/${id}/versions`);
+                        navigate(`/docs/versions/${document}`);
                     }}>
                         <CircleCheck className="h-4 w-4" />
                     </Button>
@@ -56,8 +56,11 @@ export const DocumentMenu = ({ id, version }: { id: string, version: number | nu
                             Cancel
                         </AlertDialogCancel>
                         <AlertDialogAction onClick={async () => {
-                            const { error } = await actions.deleteDocument(id);
-                            if (!error) setTimeout(() => navigate("/docs"), 250);
+                            const { data, error } = versionsView
+                                ? await actions.deleteDocument(id)
+                                : await actions.deleteDocuments(document);
+
+                            if (data && !error) setTimeout(() => navigate(data), 250);
                         }}>
                             Continue
                         </AlertDialogAction>
