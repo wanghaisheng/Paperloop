@@ -68,6 +68,11 @@ module.exports = {
             },
         },
     },
+    safelist: [
+        {
+            pattern: /text-.+/
+        }
+    ],
     plugins: [
         require("tailwindcss-animate"),
         require("@tailwindcss/typography")
