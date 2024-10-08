@@ -1,8 +1,6 @@
 ---
-import { Button } from "../ui/button";
 import { FileText, CirclePlus } from "lucide-react";
-import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/astro/components";
-
+import { Button } from "../ui/button";
 import { getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
 const locale = getPreferredLocale(Astro.request.headers);
@@ -26,12 +24,6 @@ const i18n = getTranslations(locale);
     </nav>
     <nav class="flex flex-row ml-auto items-center gap-2 text-sm font-semibold">
         <slot></slot>
-        <SignedOut>
-            <SignInButton mode="modal" />
-        </SignedOut>
-        <SignedIn>
-            <UserButton />
-        </SignedIn>
         <Button id="add" size="sm" variant="outline">
             <CirclePlus className="mr-2 h-4 w-4" />
             <span>{i18n("new-document")}</span>
