@@ -12,10 +12,7 @@ import { defaultLocale, getClientTranslations, getPreferredLocale, getTranslatio
 const { doc } = Astro.params;
 if (!doc) return;
 
-const entry = await db.select().from(Document).where(eq(Document.document, doc)).get();
-if (!entry) return;
-
-const docs = await db.select().from(Document).where(eq(Document.document, entry.document));
+const docs = await db.select().from(Document).where(eq(Document.document, doc));
 if (!docs) return;
 
 const diff = new Diff();
