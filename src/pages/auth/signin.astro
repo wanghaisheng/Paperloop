@@ -23,17 +23,24 @@ const refreshToken = cookies.get("sb-refresh-token");
 if (accessToken && refreshToken) {
     return redirect("/docs");
 }
+
+interface Props {
+    type?: "signin" | "register";
+};
+
+const { type = "signin" } = Astro.props;
+const altType = type === "signin" ? "register" : "signin";
 ---
 
-<Layout title="signin" description="register">
-    <form action="/api/auth/signin" method="POST" class="h-full flex items-center justify-center">
+<Layout title={type} description={type}>
+    <form action={`/api/auth/${type}`} method="POST" class="h-full flex items-center justify-center">
         <Card className="max-w-sm">
             <CardHeader>
                 <CardTitle className="text-2xl">
-                    Login
+                    {type}
                 </CardTitle>
                 <CardDescription>
-                    Enter your email below to login to your account
+                    Enter your email below to {type} to your account
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -45,14 +52,16 @@ if (accessToken && refreshToken) {
                     <div class="grid gap-2">
                         <div class="flex items-center">
                             <Label htmlFor="password">Password</Label>
-                            <a href="#" class="ml-auto inline-block text-sm underline">
-                                Forgot your password?
-                            </a>
+                            {type === "signin" &&
+                                <a href="#" class="ml-auto inline-block text-sm underline">
+                                    Forgot your password?
+                                </a>
+                            }
                         </div>
                         <Input id="password" type="password" required />
                     </div>
                     <Button type="submit" className="w-full">
-                        Login
+                        {type}
                     </Button>
                     <div class="relative my-2">
                         <div class="absolute inset-0 flex items-center">
@@ -79,8 +88,8 @@ if (accessToken && refreshToken) {
                 </div>
                 <div class="mt-4 text-center text-sm">
                     Don't have an account?
-                    <a href="/auth/register" class="underline">
-                        Sign up
+                    <a href={`/auth/${altType}`} class="underline">
+                        {altType}
                     </a>
                 </div>
             </CardContent>
