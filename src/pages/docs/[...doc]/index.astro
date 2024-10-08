@@ -99,7 +99,7 @@ const client = getClientTranslations(locale);
             });
         }, 1000);
 
-        const values: Record<string, string> = {};
+        const values = JSON.parse(sessionStorage.getItem("values") ?? "{}");
         new EditorView({
             parent: input,
             doc: content,
@@ -145,6 +145,7 @@ const client = getClientTranslations(locale);
         });
 
         document.querySelector("#render button")?.addEventListener("click", () => {
+            sessionStorage.setItem("values", JSON.stringify(values));
             navigate(`/docs/${id}/render?${new URLSearchParams(values).toString()}`);
         });
     });
