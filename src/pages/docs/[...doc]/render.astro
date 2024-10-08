@@ -1,0 +1,38 @@
+---
+import "@/styles/globals.css";
+import { db, Document, eq } from "astro:db";
+
+import Particles from "@/components/custom/particles.astro";
+import Layout from "@/components/custom/layout.astro";
+
+const { doc } = Astro.params;
+if (!doc) return;
+
+const entry = await db.select().from(Document).where(eq(Document.id, doc)).get();
+if (!entry) return;
+---
+
+<Layout title={entry.name} description="Doc">
+    <Particles data={ entry.markdown }></Particles>
+    <article class="prose dark:prose-invert mt-12 mx-auto"></article>
+</Layout>
+
+<script>
+    // TODO: Evaluate whether to use a SSR approach without DOMParser in markdownToHTML()
+    import { getParticles } from "@/utils/particles";
+    import { markdownToHTML } from "@/utils/markdown";
+    import "@/components/custom/content-editable";
+
+    const markdown = getParticles<string>();
+    const values = Object.fromEntries(new URLSearchParams(location.search));
+
+    document.querySelector("article")!.innerHTML = markdownToHTML(markdown, values);
+</script>
+
+<style>
+    @media print {    
+        article {
+            margin-top: 0;
+        }
+    }
+</style>

@@ -68,15 +68,10 @@ const client = getClientTranslations(locale);
     import { standardKeymap, historyKeymap, history } from "@codemirror/commands";
     import { EditorView, keymap, placeholder } from "@codemirror/view";
     import { markdown } from "@codemirror/lang-markdown";
-    import { getParticles } from "@/utils/particles.ts";
+    import { getParticles } from "@/utils/particles";
     import { debounce } from "@/utils/debounce.ts";
-    import { ContentEditable } from "@/components/custom/content-editable.ts";
-    import markdownit from "markdown-it";
-
-    const md = markdownit({
-        html: true,
-        breaks: true
-    });
+    import { markdownToHTML } from "@/utils/markdown";
+    import { ContentEditable } from "@/components/custom/content-editable";
 
     document.addEventListener("astro:page-load", () => {
         const { id, version } = getParticles<{ id: string; version?: number; }>();
@@ -96,7 +91,7 @@ const client = getClientTranslations(locale);
             });
         }, 1000);
 
-        const values: Record<string, string | undefined> = {};
+        const values: Record<string, string> = {};
         new EditorView({
             parent: input,
             doc: content,
@@ -113,24 +108,7 @@ const client = getClientTranslations(locale);
                         const value = update.state.doc.toString();
                         if (update.docChanged) setMarkdown(value);
 
-                        // TODO: Evaluate whether to create markdown-it plugin
-                        const replaced = value.replace(/\[(\S+)\]/g, (_, key) => {
-                            const value = values[key] ?? String();
-                            return `<content-editable value="${value}" placeholder="${key}"></content-editable>`;
-                        });
-
-                        // TODO: Evaluate whether to create markdown-it plugin
-                        const html = md.render(replaced);
-                        const parsed = new DOMParser().parseFromString(html, "text/html");
-                        for (const element of parsed.querySelectorAll("h1, h2, h3, p")) {
-                            const [match, tailwind] = element.textContent?.match(/^([a-z0-9-]+):/) ?? [];
-                            if (!match) continue;
-
-                            element.innerHTML = element.innerHTML.replace(match, String());
-                            element.classList.add(tailwind);
-                        }
-
-                        output.innerHTML = new XMLSerializer().serializeToString(parsed);
+                        output.innerHTML = markdownToHTML(value, values);
                     }
                 })
             ]
