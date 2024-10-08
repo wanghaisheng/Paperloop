@@ -4,13 +4,14 @@ import { db, Document, eq } from "astro:db";
 import { Button } from "@/components/ui/button";
 import { Printer } from "lucide-react";
 
-import Particles from "@/components/custom/particles.astro";
 import Layout from "@/components/custom/layout.astro";
+import DocumentRender from "@/components/custom/document-render.astro";
 import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
 const { doc } = Astro.params;
 if (!doc) return;
 
+const values = Object.fromEntries(new URLSearchParams(Astro.url.search));
 const entry = await db.select().from(Document).where(eq(Document.id, doc)).get();
 if (!entry) return;
 
@@ -23,24 +24,14 @@ const i18n = getTranslations(locale);
         <Printer className="mr-2 h-4 w-4" />
         {i18n("print")}
     </Button>
-    <Particles data={ entry.markdown }></Particles>
-    <article class="prose dark:prose-invert mt-12 mx-auto" transition:name="render"></article>
+    <div class="mt-12">
+        <DocumentRender value={entry.markdown} values={values}></DocumentRender>
+    </div>
 </Layout>
 
 <script>
-    // TODO: Evaluate whether to use a SSR approach without DOMParser in markdownToHTML()
-    import { getParticles } from "@/utils/particles";
-    import { markdownToHTML } from "@/utils/markdown";
-    import "@/components/custom/content-editable";
-
     document.addEventListener("astro:page-load", () => {
-        const printButton = document.querySelector("button#print");
-        if (!printButton) return;
-
-        const markdown = getParticles<string>();
-        const values = Object.fromEntries(new URLSearchParams(location.search));
-        document.querySelector("article")!.innerHTML = markdownToHTML(markdown, values);
-        printButton?.addEventListener("click", () => print());
+        document.querySelector("button#print")?.addEventListener("click", () => print());;
     });
 </script>
 

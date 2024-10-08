@@ -10,6 +10,7 @@ import Layout from "@/components/custom/layout.astro";
 import Particles from "@/components/custom/particles.astro";
 import DocumentHeader from "@/components/custom/document-header.astro";
 import ContentEditable from "@/components/custom/content-editable.astro";
+import DocumentRender from "@/components/custom/document-render.astro";
 import { defaultLocale, getClientTranslations, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
 const { doc } = Astro.params;
@@ -64,8 +65,8 @@ const client = getClientTranslations(locale);
                     </div>
                 </CardTitle>
             </CardHeader>
-            <CardContent className="prose dark:prose-invert mx-auto">
-                <article id="output" transition:name="render"></article>
+            <CardContent>
+                <DocumentRender></DocumentRender>
             </CardContent>
         </Card>
     </div>
@@ -80,11 +81,10 @@ const client = getClientTranslations(locale);
     import { getParticles } from "@/utils/particles";
     import { debounce } from "@/utils/debounce.ts";
     import { markdownToHTML } from "@/utils/markdown";
-    import { ContentEditable } from "@/components/custom/content-editable";
 
     document.addEventListener("astro:page-load", () => {
         const input = document.getElementById("input");
-        const output = document.getElementById("output");
+        const output = document.getElementById("document-render");
         if (!input || !output) return;
 
         const fallback = input.getAttribute("data-placeholder") ?? String();
@@ -132,25 +132,12 @@ const client = getClientTranslations(locale);
             }
         });
 
-        output.addEventListener("input", ({ target }) => {
-            if (target instanceof ContentEditable) {
-                const { value, placeholder } = target;
-                values[placeholder] = value;
-
-                // Update inputs sharing the same placeholder (i.e., variable name)
-                for (const element of output.querySelectorAll(`[placeholder="${placeholder}"]`)) {
-                    if (element !== target) element.setAttribute("value", value);
-                }
-            }
-        });
-
         document.querySelector("button#clear")?.addEventListener("click", () => {
             sessionStorage.setItem("values", JSON.stringify(values = {}));
             output.innerHTML = markdownToHTML(value, values);
         });
 
         document.querySelector("button#render")?.addEventListener("click", () => {
-            sessionStorage.setItem("values", JSON.stringify(values));
             navigate(`/docs/${id}/render?${new URLSearchParams(values).toString()}`);
         });
     });

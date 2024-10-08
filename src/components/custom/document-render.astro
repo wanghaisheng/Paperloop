@@ -1,0 +1,42 @@
+---
+import Particles from './particles.astro';
+
+export interface Props {
+    value?: string;
+    values?: Record<string, string>;
+}
+---
+
+<div id="document-wrapper" class="prose dark:prose-invert mx-auto">
+    <Particles data={Astro.props}></Particles>
+    <article id="document-render" transition:name="render"></article>
+</div>
+
+<script>
+    import { getParticles } from "@/utils/particles";
+    import { markdownToHTML } from "@/utils/markdown";
+    import { ContentEditable } from "@/components/custom/content-editable";
+    import type { Props } from "./document-render.astro";
+
+    document.addEventListener("astro:page-load", () => {
+        const wrapper = document.getElementById("document-wrapper");
+        const render = document.getElementById("document-render");
+        if (!wrapper || !render) return;
+
+        const { value = String(), values = {} } = getParticles<Props>(wrapper);
+        render!.innerHTML = markdownToHTML(value, values);
+
+        render.addEventListener("input", ({ target }) => {
+            if (target instanceof ContentEditable) {
+                const { value, placeholder } = target;
+                values[placeholder] = value;
+                sessionStorage.setItem("values", JSON.stringify(values));
+
+                // Update inputs sharing the same placeholder (i.e., variable name)
+                for (const element of render.querySelectorAll(`[placeholder="${placeholder}"]`)) {
+                    if (element !== target) element.setAttribute("value", value);
+                }
+            }
+        });
+    });
+</script>
