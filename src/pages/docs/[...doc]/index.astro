@@ -70,9 +70,8 @@ const client = getClientTranslations(locale);
     import { markdown } from "@codemirror/lang-markdown";
     import { getParticles } from "@/utils/particles.ts";
     import { debounce } from "@/utils/debounce.ts";
+    import { ContentEditable } from "@/components/custom/content-editable.ts";
     import markdownit from "markdown-it";
-
-    import "@/components/custom/content-editable.ts";
 
     const md = markdownit({
         html: true,
@@ -97,6 +96,7 @@ const client = getClientTranslations(locale);
             });
         }, 1000);
 
+        const values: Record<string, string | undefined> = {};
         new EditorView({
             parent: input,
             doc: content,
@@ -115,7 +115,8 @@ const client = getClientTranslations(locale);
 
                         // TODO: Evaluate whether to create markdown-it plugin
                         const replaced = value.replace(/\[(\S+)\]/g, (_, key) => {
-                            return `<content-editable placeholder=${key}></content-editable>`;
+                            const value = values[key] ?? String();
+                            return `<content-editable value="${value}" placeholder="${key}"></content-editable>`;
                         });
 
                         // TODO: Evaluate whether to create markdown-it plugin
@@ -142,6 +143,18 @@ const client = getClientTranslations(locale);
                     id,
                     name: nameInput.textContent ?? String()
                 });
+            }
+        });
+
+        output.addEventListener("input", ({ target }) => {
+            if (target instanceof ContentEditable) {
+                const { value, placeholder } = target;
+                values[placeholder] = value;
+
+                // Update inputs sharing the same placeholder (i.e., variable name)
+                for (const element of output.querySelectorAll(`[placeholder="${placeholder}"]`)) {
+                    if (element !== target) element.setAttribute("value", value);
+                }
             }
         });
     });

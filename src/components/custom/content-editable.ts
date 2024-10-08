@@ -1,8 +1,8 @@
-class ContentEditable extends HTMLElement {
-    static observedAttributes = ["placeholder"];
+export class ContentEditable extends HTMLElement {
+    static observedAttributes = ["value", "placeholder"];
 
-    private renderRoot: ShadowRoot;
-    private placeholder = String();
+    value = String();
+    placeholder = String();
 
     get styles() {
         return `
@@ -23,15 +23,18 @@ class ContentEditable extends HTMLElement {
     }
 
     render() {
-        this.renderRoot.innerHTML = `
+        this.shadowRoot!.innerHTML = `
             <style>${this.styles}</style>
-            <div placeholder=${this.placeholder} contenteditable="true"></div>
+            <div placeholder=${this.placeholder} contenteditable="true">${this.value}</div>
         `;
     }
 
     constructor() {
         super();
-        this.renderRoot = this.attachShadow({ mode: "open" });
+        const shadowRoot = this.attachShadow({ mode: "open" });
+        this.addEventListener("input", () => {
+            this.value = shadowRoot.querySelector("div")?.textContent ?? String();
+        });
     }
 
     attributeChangedCallback(name: string, _: string, value: string) {
