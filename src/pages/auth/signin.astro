@@ -1,9 +1,19 @@
 ---
 import "@/styles/globals.css";
-import Layout from "@/components/custom/layout.astro"
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import {
+    Card,
+    CardHeader,
+    CardTitle,
+    CardDescription,
+    CardContent,
+} from "@/components/ui/card";
+
+import Layout from "@/components/custom/layout.astro";
 
 const { cookies, redirect } = Astro;
-
 const accessToken = cookies.get("sb-access-token");
 const refreshToken = cookies.get("sb-refresh-token");
 
@@ -13,13 +23,45 @@ if (accessToken && refreshToken) {
 ---
 
 <Layout title="signin" description="register">
-    <h1>Signin</h1>
-    <p>New here? <a href="/signin">Create an account</a></p>
-    <form action="/api/auth/signin" method="POST">
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" />
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" />
-        <button type="submit">Login</button>
+    <form action="/api/auth/signin" method="POST" class="h-full flex items-center justify-center">
+        <Card className="max-w-sm">
+            <CardHeader>
+                <CardTitle className="text-2xl">
+                    Login
+                </CardTitle>
+                <CardDescription>
+                    Enter your email below to login to your account
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <div class="grid gap-4">
+                    <div class="grid gap-2">
+                        <Label htmlFor="email">Email</Label>
+                        <Input id="email" type="email" required/>
+                    </div>
+                    <div class="grid gap-2">
+                        <div class="flex items-center">
+                            <Label htmlFor="password">Password</Label>
+                            <a href="#" class="ml-auto inline-block text-sm underline">
+                                Forgot your password?
+                            </a>
+                        </div>
+                        <Input id="password" type="password" required />
+                    </div>
+                    <Button type="submit" className="w-full">
+                        Login
+                    </Button>
+                    <Button variant="outline" className="w-full" disabled>
+                        Login with Google
+                    </Button>
+                </div>
+                <div class="mt-4 text-center text-sm">
+                    Don't have an account?
+                    <a href="/auth/register" class="underline">
+                        Sign up
+                    </a>
+                </div>
+            </CardContent>
+        </Card>
     </form>
 </Layout>
