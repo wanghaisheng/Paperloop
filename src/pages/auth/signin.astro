@@ -1,0 +1,25 @@
+---
+import "@/styles/globals.css";
+import Layout from "@/components/custom/layout.astro"
+
+const { cookies, redirect } = Astro;
+
+const accessToken = cookies.get("sb-access-token");
+const refreshToken = cookies.get("sb-refresh-token");
+
+if (accessToken && refreshToken) {
+    return redirect("/docs");
+}
+---
+
+<Layout title="signin" description="register">
+    <h1>Signin</h1>
+    <p>New here? <a href="/signin">Create an account</a></p>
+    <form action="/api/auth/signin" method="POST">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" />
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" />
+        <button type="submit">Login</button>
+    </form>
+</Layout>
