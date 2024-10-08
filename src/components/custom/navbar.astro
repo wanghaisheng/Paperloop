@@ -22,8 +22,9 @@ const i18n = getTranslations(locale);
             {i18n("my-documents")}
         </a>
     </nav>
-    <nav class="flex flex-row ml-auto items-center gap-6 text-sm font-semibold">
-        <Button size="sm" variant="outline">
+    <nav class="flex flex-row ml-auto items-center gap-2 text-sm font-semibold">
+        <slot></slot>
+        <Button id="add" size="sm" variant="outline">
             <CirclePlus className="mr-2 h-4 w-4" />
             <span>{i18n("new-document")}</span>
         </Button>
@@ -35,7 +36,7 @@ const i18n = getTranslations(locale);
     import { navigate } from "astro:transitions/client";
 
     document.addEventListener("astro:page-load", () => {
-        document.querySelector("button")?.addEventListener("click", async () => {
+        document.querySelector("button#add")?.addEventListener("click", async () => {
             const { data, error } = await actions.createDocument();
             if (!error) navigate(`/docs/${data.id}`);
         });

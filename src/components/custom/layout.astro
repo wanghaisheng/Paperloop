@@ -29,7 +29,9 @@ const { title, description, locale } = Astro.props;
         <ViewTransitions />
     </head>
     <body class="antialiased h-full flex flex-col">
-        <Navbar></Navbar>
+        <Navbar>
+            <slot name="navbar"></slot>
+        </Navbar>
         <main class="flex-1 p-8 overflow-hidden">
             <slot></slot>
         </main>

@@ -1,18 +1,28 @@
 ---
 import "@/styles/globals.css";
 import { db, Document, eq } from "astro:db";
+import { Button } from "@/components/ui/button";
+import { Printer } from "lucide-react";
 
 import Particles from "@/components/custom/particles.astro";
 import Layout from "@/components/custom/layout.astro";
+import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
 const { doc } = Astro.params;
 if (!doc) return;
 
 const entry = await db.select().from(Document).where(eq(Document.id, doc)).get();
 if (!entry) return;
+
+const locale = getPreferredLocale(Astro.request.headers) ?? defaultLocale;
+const i18n = getTranslations(locale);
 ---
 
 <Layout title={entry.name} description="Doc">
+    <Button id="print" slot="navbar" variant="outline" size="sm">
+        <Printer className="mr-2 h-4 w-4" />
+        {i18n("print")}
+    </Button>
     <Particles data={ entry.markdown }></Particles>
     <article class="prose dark:prose-invert mt-12 mx-auto" transition:name="render"></article>
 </Layout>
@@ -26,8 +36,9 @@ if (!entry) return;
     document.addEventListener("astro:page-load", () => {
         const markdown = getParticles<string>();
         const values = Object.fromEntries(new URLSearchParams(location.search));
-
         document.querySelector("article")!.innerHTML = markdownToHTML(markdown, values);
+
+        document.querySelector("button#print")?.addEventListener("click", () => print());
     });
 </script>
 
