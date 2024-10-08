@@ -1,5 +1,5 @@
 ---
-import { FileText, CirclePlus, LogIn } from "lucide-react";
+import { FileText, LogIn, User, LogOut } from "lucide-react";
 import { Button } from "../ui/button";
 import { getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
@@ -28,9 +28,14 @@ const i18n = getTranslations(locale);
         <slot></slot>
         {Astro.locals.user
             ? <Button id="add" size="sm" variant="outline">
-                <CirclePlus className="mr-2 h-4 w-4" />
                 <span>{i18n("new-document")}</span>
             </Button>
+            <form action="/api/auth/signout" method="get">
+                <Button size="icon" variant="outline" className="h-9 w-9 rounded-full group">
+                    <User strokeWidth="2.25" className="h-4 w-4 group-hover:hidden" />
+                    <LogOut strokeWidth="2.25" className="hidden h-4 w-4 group-hover:block" />
+                </Button>
+            </form>
             : <a href="/auth/signin">
                 <Button size="sm" variant="outline">
                     <LogIn className="mr-2 h-4 w-4" />
