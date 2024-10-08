@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import db from "@astrojs/db";
+import clerk from "@clerk/astro";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
@@ -14,6 +15,7 @@ export default defineConfig({
     },
     integrations: [
         db(),
+        clerk(),
         react(),
         tailwind({
             applyBaseStyles: false
