@@ -21,10 +21,10 @@ const { title, description, locale } = Astro.props;
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <meta name="generator" content={Astro.generator} />
         {locales.map(lang =>
-            <link rel="alternate" hreflang={lang} href={`https://doclino.app/?lang=${lang}`} />
+            <link rel="alternate" hreflang={lang} href={`https://paperloop.io/?lang=${lang}`} />
         )}
-        <link rel="alternate" hreflang="x-default" href="https://doclino.app/" />
-        <title>{title} | Doclino</title>
+        <link rel="alternate" hreflang="x-default" href="https://paperloop.io/" />
+        <title>{title} | Paperloop</title>
         <slot name="head"></slot>
         <ViewTransitions />
     </head>
