@@ -1,5 +1,5 @@
 ---
-import { FileText, CirclePlus } from "lucide-react";
+import { FileText, CirclePlus, LogIn } from "lucide-react";
 import { Button } from "../ui/button";
 import { getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
@@ -15,19 +15,29 @@ const i18n = getTranslations(locale);
             <FileText className="h-6 w-6" />
             <span>Paperloop</span>
         </a>
-        <a
-            href="/docs"
-            class="hidden md:block text-foreground transition-colors hover:text-foreground"
-        >
-            {i18n("my-documents")}
-        </a>
+        {Astro.locals.user &&
+            <a
+                href="/docs"
+                class="hidden md:block text-foreground transition-colors hover:text-foreground"
+            >
+                {i18n("my-documents")}
+            </a>
+        }
     </nav>
     <nav class="flex flex-row ml-auto items-center gap-2 text-sm font-semibold">
         <slot></slot>
-        <Button id="add" size="sm" variant="outline">
-            <CirclePlus className="mr-2 h-4 w-4" />
-            <span>{i18n("new-document")}</span>
-        </Button>
+        {Astro.locals.user
+            ? <Button id="add" size="sm" variant="outline">
+                <CirclePlus className="mr-2 h-4 w-4" />
+                <span>{i18n("new-document")}</span>
+            </Button>
+            : <a href="/auth/signin">
+                <Button size="sm" variant="outline">
+                    <LogIn className="mr-2 h-4 w-4" />
+                    <span>{i18n("sign-in")}</span>
+                </Button>
+            </a>
+        }
     </nav>
 </header>
 
