@@ -11,6 +11,9 @@ import {
     CardContent,
 } from "@/components/ui/card";
 
+import AppleIcon from "@/icons/brands/apple.svg?raw";
+import GoogleIcon from "@/icons/brands/google.svg?raw";
+
 import Layout from "@/components/custom/layout.astro";
 
 const { cookies, redirect } = Astro;
@@ -51,9 +54,28 @@ if (accessToken && refreshToken) {
                     <Button type="submit" className="w-full">
                         Login
                     </Button>
-                    <Button variant="outline" className="w-full" disabled>
-                        Login with Google
-                    </Button>
+                    <div class="relative my-2">
+                        <div class="absolute inset-0 flex items-center">
+                            <span class="w-full border-t" />
+                        </div>
+                        <div class="relative flex justify-center text-xs uppercase">
+                            <span class="bg-background px-2 text-muted-foreground">
+                                Or continue with
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <Button id="Google" variant="outline" className="w-full">
+                            <div class="flex h-4 w-4 fill-primary">
+                                <Fragment set:html={GoogleIcon} />
+                            </div>
+                        </Button>
+                        <Button id="Apple" variant="outline" className="w-full">
+                            <div class="flex h-5 w-5 fill-primary">
+                                <Fragment set:html={AppleIcon} />
+                            </div>
+                        </Button>
+                    </div>
                 </div>
                 <div class="mt-4 text-center text-sm">
                     Don't have an account?
