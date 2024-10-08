@@ -1,6 +1,6 @@
 import { actions } from "astro:actions";
 import { navigate } from "astro:transitions/client";
-import { History, Pencil, CircleCheck, Trash } from "lucide-react";
+import { GalleryHorizontalEnd, Pencil, CircleCheck, Trash } from "lucide-react";
 import { IconButton } from "./icon-button";
 
 import {
@@ -27,7 +27,7 @@ export const DocumentMenu = ({ id, document, version, translations }: DocumentMe
     return (
         <div className="flex gap-2" onClick={event => event.preventDefault()}>
             {!versionsView
-                ? <IconButton icon={History} tooltip={translations["client-history"]} onClick={() => {
+                ? <IconButton icon={GalleryHorizontalEnd} tooltip={translations["client-history"]} onClick={() => {
                     navigate(`/docs/versions/${document}`);
                 }}></IconButton>
                 : version

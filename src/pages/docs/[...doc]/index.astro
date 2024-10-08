@@ -1,7 +1,7 @@
 ---
 import "@/styles/globals.css";
 import { db, Document, eq } from "astro:db";
-import { ExternalLink } from "lucide-react";
+import { Eraser, Maximize } from "lucide-react";
 import { IconButton } from "@/components/ui/icon-button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { DocumentMenu } from "@/components/ui/document-menu";
@@ -58,8 +58,9 @@ const client = getClientTranslations(locale);
                     <span>
                         {i18n("preview")}
                     </span>
-                    <div id="render" class="flex gap-2">
-                        <IconButton icon={ExternalLink} tooltip="render"></IconButton>
+                    <div class="flex gap-2">
+                        <IconButton icon={Eraser} tooltip="clear"></IconButton>
+                        <IconButton icon={Maximize} tooltip="render"></IconButton>
                     </div>
                 </CardTitle>
             </CardHeader>
@@ -89,7 +90,7 @@ const client = getClientTranslations(locale);
         if (!input || !output) return;
 
         const fallback = input.getAttribute("data-placeholder") ?? String();
-        const content = input.textContent?.trim() ?? String();
+        let value = input.textContent?.trim() ?? String();
         input.textContent = String();
 
         const setMarkdown = debounce((value: string) => {
@@ -99,10 +100,10 @@ const client = getClientTranslations(locale);
             });
         }, 1000);
 
-        const values = JSON.parse(sessionStorage.getItem("values") ?? "{}");
+        let values = JSON.parse(sessionStorage.getItem("values") ?? "{}");
         new EditorView({
             parent: input,
-            doc: content,
+            doc: value,
             extensions: [
                 EditorView.lineWrapping,
                 keymap.of(standardKeymap),
@@ -113,7 +114,7 @@ const client = getClientTranslations(locale);
                 EditorView.editable.of(!version),
                 EditorView.updateListener.of(update => {
                     if (update.docChanged || update.heightChanged) {
-                        const value = update.state.doc.toString();
+                        value = update.state.doc.toString();
                         if (update.docChanged) setMarkdown(value);
 
                         output.innerHTML = markdownToHTML(value, values);
@@ -144,7 +145,12 @@ const client = getClientTranslations(locale);
             }
         });
 
-        document.querySelector("#render button")?.addEventListener("click", () => {
+        document.querySelector("button#clear")?.addEventListener("click", () => {
+            sessionStorage.setItem("values", JSON.stringify(values = {}));
+            output.innerHTML = markdownToHTML(value, values);
+        });
+
+        document.querySelector("button#render")?.addEventListener("click", () => {
             sessionStorage.setItem("values", JSON.stringify(values));
             navigate(`/docs/${id}/render?${new URLSearchParams(values).toString()}`);
         });

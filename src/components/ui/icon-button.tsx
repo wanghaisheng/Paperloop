@@ -17,7 +17,7 @@ export const IconButton = ({ icon: Icon, onClick, tooltip }: IconButtonProps) =>
         <TooltipProvider>
             <Tooltip>
                 <TooltipTrigger asChild>
-                    <Button size="icon" variant="ghost" className="h-6 w-6" onClick={onClick}>
+                    <Button id={tooltip} size="icon" variant="ghost" className="h-6 w-6" onClick={onClick}>
                         <Icon className="h-4 w-4" />
                     </Button>
                 </TooltipTrigger>
