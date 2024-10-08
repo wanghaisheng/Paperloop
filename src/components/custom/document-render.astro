@@ -8,9 +8,9 @@ export interface Props {
 }
 ---
 
-<div id="document-wrapper" class="prose dark:prose-invert mx-auto">
+<div id="document-wrapper" class="max-w-prose mx-auto" transition:name="render">
     <Particles data={Astro.props}></Particles>
-    <article id="document-render" transition:name="render"></article>
+    <article id="document-render" class="prose dark:prose-invert"></article>
 </div>
 
 <script>
