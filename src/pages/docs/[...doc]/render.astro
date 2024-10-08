@@ -34,11 +34,13 @@ const i18n = getTranslations(locale);
     import "@/components/custom/content-editable";
 
     document.addEventListener("astro:page-load", () => {
+        const printButton = document.querySelector("button#print");
+        if (!printButton) return;
+
         const markdown = getParticles<string>();
         const values = Object.fromEntries(new URLSearchParams(location.search));
         document.querySelector("article")!.innerHTML = markdownToHTML(markdown, values);
-
-        document.querySelector("button#print")?.addEventListener("click", () => print());
+        printButton?.addEventListener("click", () => print());
     });
 </script>
 

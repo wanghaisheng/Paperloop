@@ -83,8 +83,6 @@ const client = getClientTranslations(locale);
     import { ContentEditable } from "@/components/custom/content-editable";
 
     document.addEventListener("astro:page-load", () => {
-        const { id, version } = getParticles<{ id: string; version?: number; }>();
-
         const input = document.getElementById("input");
         const output = document.getElementById("output");
         if (!input || !output) return;
@@ -93,6 +91,7 @@ const client = getClientTranslations(locale);
         let value = input.textContent?.trim() ?? String();
         input.textContent = String();
 
+        const { id, version } = getParticles<{ id: string; version?: number; }>();
         const setMarkdown = debounce((value: string) => {
             actions.updateDocument({
                 id,
