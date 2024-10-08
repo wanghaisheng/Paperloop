@@ -14,7 +14,7 @@ if (!entry) return;
 
 <Layout title={entry.name} description="Doc">
     <Particles data={ entry.markdown }></Particles>
-    <article class="prose dark:prose-invert mt-12 mx-auto"></article>
+    <article class="prose dark:prose-invert mt-12 mx-auto" transition:name="render"></article>
 </Layout>
 
 <script>
@@ -23,10 +23,12 @@ if (!entry) return;
     import { markdownToHTML } from "@/utils/markdown";
     import "@/components/custom/content-editable";
 
-    const markdown = getParticles<string>();
-    const values = Object.fromEntries(new URLSearchParams(location.search));
+    document.addEventListener("astro:page-load", () => {
+        const markdown = getParticles<string>();
+        const values = Object.fromEntries(new URLSearchParams(location.search));
 
-    document.querySelector("article")!.innerHTML = markdownToHTML(markdown, values);
+        document.querySelector("article")!.innerHTML = markdownToHTML(markdown, values);
+    });
 </script>
 
 <style>

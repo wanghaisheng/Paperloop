@@ -1,6 +1,8 @@
 ---
 import "@/styles/globals.css";
 import { db, Document, eq } from "astro:db";
+import { ExternalLink } from "lucide-react";
+import { IconButton } from "@/components/ui/icon-button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { DocumentMenu } from "@/components/ui/document-menu";
 
@@ -52,12 +54,17 @@ const client = getClientTranslations(locale);
         </div>
         <Card className="h-full flex-1 overflow-auto">
             <CardHeader>
-                <CardTitle>
-                    {i18n("preview")}
+                <CardTitle className="flex items-center justify-between">
+                    <span>
+                        {i18n("preview")}
+                    </span>
+                    <div id="render" class="flex gap-2">
+                        <IconButton icon={ExternalLink} tooltip="render"></IconButton>
+                    </div>
                 </CardTitle>
             </CardHeader>
             <CardContent className="prose dark:prose-invert mx-auto">
-                <article id="output"></article>
+                <article id="output" transition:name="render"></article>
             </CardContent>
         </Card>
     </div>
@@ -65,6 +72,7 @@ const client = getClientTranslations(locale);
 
 <script>
     import { actions } from "astro:actions";
+    import { navigate } from "astro:transitions/client";
     import { standardKeymap, historyKeymap, history } from "@codemirror/commands";
     import { EditorView, keymap, placeholder } from "@codemirror/view";
     import { markdown } from "@codemirror/lang-markdown";
@@ -134,6 +142,10 @@ const client = getClientTranslations(locale);
                     if (element !== target) element.setAttribute("value", value);
                 }
             }
+        });
+
+        document.querySelector("#render button")?.addEventListener("click", () => {
+            navigate(`/docs/${id}/render?${new URLSearchParams(values).toString()}`);
         });
     });
 </script>
