@@ -23,7 +23,7 @@ const locale = getPreferredLocale(Astro.request.headers) ?? defaultLocale;
 const i18n = getTranslations(locale);
 ---
 
-<Layout title={entry.name} description="Doc">
+<Layout title={entry.name}>
     <Button id="print" slot="navbar" variant="outline" size="sm">
         <Printer className="mr-2 h-4 w-4" />
         {i18n("print")}

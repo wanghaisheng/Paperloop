@@ -6,7 +6,7 @@ import Navbar from "@/components/custom/navbar.astro";
 
 interface Props {
     title: string;
-    description: string;
+    description?: string;
     locale?: string;
 }
 
@@ -16,7 +16,7 @@ const { title, description, locale } = Astro.props;
 <html class="h-full" lang={locale}>
     <head>
         <meta charset="utf-8" />
-        <meta name="description" content={description}>
+        <meta name="description" content={description ?? "Paperloop"}>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <meta name="generator" content={Astro.generator} />

@@ -30,7 +30,7 @@ const i18n = getTranslations(locale);
 const client = getClientTranslations(locale);
 ---
 
-<Layout title={entry.name} description="Doc" locale={locale}>
+<Layout title={entry.name || i18n("new-document")} locale={locale}>
     <Particles data={{ id: entry.id, version: entry.version }}></Particles>
     <div class="h-full flex gap-4">
         <div class="flex-1" transition:name={entry.id}>

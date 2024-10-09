@@ -23,7 +23,7 @@ const locale = Astro.url.searchParams.get("lang") ?? getPreferredLocale(Astro.re
 const i18n = getTranslations(locale);
 ---
 
-<Layout title={i18n("new-document")} description={i18n("new-document")} locale={locale}>
+<Layout title={i18n("my-documents")} locale={locale}>
     <div class="grid grid-cols-3 auto-rows-fr gap-4">
         {highesVersions.map(doc =>
             <a href={"docs/" + doc.id} transition:name={doc.id}>

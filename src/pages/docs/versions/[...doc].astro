@@ -27,7 +27,7 @@ const i18n = getTranslations(locale);
 const client = getClientTranslations(locale);
 ---
 
-<Layout title="Doc" description="Doc" locale={locale}>
+<Layout title={i18n("versions")} locale={locale}>
     <div class="h-full flex flex-row-reverse gap-4 overflow-auto">
         {docs.reverse().map((doc, index, all) =>
             <a href={`/docs/${doc.id}`} class="min-w-96" transition:name={doc.id}>
