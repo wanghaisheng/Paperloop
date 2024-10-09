@@ -32,7 +32,7 @@ const { title, description, locale } = Astro.props;
         <Navbar>
             <slot name="navbar"></slot>
         </Navbar>
-        <main class="flex-1 p-8 overflow-hidden">
+        <main class="flex-1 p-8 overflow-auto">
             <slot></slot>
         </main>
     </body>
@@ -48,3 +48,11 @@ const { title, description, locale } = Astro.props;
         });
     });
 </script>
+
+<style>
+    @media print { 
+        main {
+            overflow: visible;
+        }
+    }
+</style>

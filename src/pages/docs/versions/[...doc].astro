@@ -28,10 +28,10 @@ const client = getClientTranslations(locale);
 ---
 
 <Layout title={i18n("versions")} locale={locale}>
-    <div class="h-full flex flex-row-reverse gap-4 overflow-auto">
+    <div class="h-full flex flex-row-reverse gap-4">
         {docs.reverse().map((doc, index, all) =>
-            <a href={`/docs/${doc.id}`} class="min-w-96" transition:name={doc.id}>
-                <Card className="flex flex-col h-full overflow-auto cursor-pointer">
+            <a href={`/docs/${doc.id}`} class="min-w-md max-w-lg" transition:name={doc.id}>
+                <Card className="flex flex-col h-full cursor-pointer">
                     <CardHeader>
                         <DocumentHeader doc={doc}>
                             <DocumentMenu
