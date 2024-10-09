@@ -2,9 +2,8 @@
 import Particles from './particles.astro';
 
 export interface Props {
-    id: string;
+    id?: string;
     value?: string;
-    values?: Record<string, string>;
 }
 ---
 
@@ -15,7 +14,7 @@ export interface Props {
 
 <script>
     import { getParticles } from "@/utils/particles";
-    import { markdownToHTML } from "@/utils/markdown";
+    import { markdownToHTML, updateRender } from "@/utils/markdown";
     import { ContentEditable } from "@/components/custom/content-editable";
     import type { Props } from "./document-render.astro";
 
@@ -24,14 +23,36 @@ export interface Props {
         const render = document.getElementById("document-render");
         if (!wrapper || !render) return;
 
-        const { id, value = String(), values = {} } = getParticles<Props>(wrapper);
-        render!.innerHTML = markdownToHTML(value, values);
+        let { id, value = String() } = getParticles<Props>(wrapper);
+
+        let values: Record<string, string> = {
+            ...(id && JSON.parse(localStorage.getItem(id) ?? "{}")),
+            ...Object.fromEntries(new URLSearchParams(location.search))
+        };
+
+        // Intial render
+        const renderDocument = () => {
+            render!.innerHTML = markdownToHTML(value, values);
+        }
+        renderDocument();
+
+        // And renders based triggered by parents
+        updateRender.setValue = input => {
+            value = input;
+            renderDocument();
+        }
+
+        updateRender.setValues = input => {
+            values = input;
+            renderDocument();
+            if (id) localStorage.setItem(id, JSON.stringify(values));
+        }
 
         render.addEventListener("input", ({ target }) => {
             if (target instanceof ContentEditable) {
                 const { value, placeholder } = target;
                 values[placeholder] = value;
-                localStorage.setItem(id, JSON.stringify(values));
+                if (id) localStorage.setItem(id, JSON.stringify(values));
 
                 // Update inputs sharing the same placeholder (i.e., variable name)
                 for (const element of render.querySelectorAll(`[placeholder="${placeholder}"]`)) {

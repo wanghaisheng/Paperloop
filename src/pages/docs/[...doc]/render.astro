@@ -18,7 +18,6 @@ const entry = await db.select().from(Document).where(
 ).get();
 if (!entry) return Astro.redirect("/404");
 
-const values = Object.fromEntries(new URLSearchParams(Astro.url.search));
 const locale = getPreferredLocale(Astro.request.headers) ?? defaultLocale;
 const i18n = getTranslations(locale);
 ---
@@ -29,7 +28,7 @@ const i18n = getTranslations(locale);
         {i18n("print")}
     </Button>
     <div class="mt-12">
-        <DocumentRender id={entry.id} value={entry.markdown} values={values}></DocumentRender>
+        <DocumentRender id={entry.id} value={entry.markdown}></DocumentRender>
     </div>
 </Layout>
 

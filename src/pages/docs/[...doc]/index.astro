@@ -83,8 +83,8 @@ const client = getClientTranslations(locale);
     import { EditorView, keymap, placeholder } from "@codemirror/view";
     import { markdown } from "@codemirror/lang-markdown";
     import { getParticles } from "@/utils/particles";
-    import { debounce } from "@/utils/debounce.ts";
-    import { markdownToHTML } from "@/utils/markdown";
+    import { updateRender } from "@/utils/markdown";
+    import { debounce } from "@/utils/debounce";
 
     document.addEventListener("astro:page-load", () => {
         const input = document.getElementById("input");
@@ -103,7 +103,6 @@ const client = getClientTranslations(locale);
             });
         }, 1000);
 
-        let values = JSON.parse(localStorage.getItem(id) ?? "{}");
         new EditorView({
             parent: input,
             doc: value,
@@ -120,7 +119,7 @@ const client = getClientTranslations(locale);
                         value = update.state.doc.toString();
                         if (update.docChanged) setMarkdown(value);
 
-                        output.innerHTML = markdownToHTML(value, values);
+                        updateRender.setValue?.(value);
                     }
                 })
             ]
@@ -137,12 +136,11 @@ const client = getClientTranslations(locale);
         });
 
         document.querySelector("button#clear")?.addEventListener("click", () => {
-            localStorage.setItem(id, JSON.stringify(values = {}));
-            output.innerHTML = markdownToHTML(value, values);
+            updateRender.setValues?.({});
         });
 
         document.querySelector("button#render")?.addEventListener("click", () => {
-            navigate(`/docs/${id}/render?${new URLSearchParams(values).toString()}`);
+            navigate(`/docs/${id}/render`);
         });
     });
 </script>

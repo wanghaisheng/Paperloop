@@ -25,3 +25,8 @@ export const markdownToHTML = (value: string, values: Record<string, string>) =>
 
     return new XMLSerializer().serializeToString(parsed);
 };
+
+export const updateRender: {
+    setValue?: (value: string) => void,
+    setValues?: (values: Record<string, string>) => void
+} = {};
