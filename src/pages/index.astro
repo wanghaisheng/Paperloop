@@ -1,13 +1,21 @@
 ---
+export const prerender = true;
+
 import "@/styles/globals.css";
 import Layout from "@/components/custom/layout.astro";
-import { getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
+import { getTranslations } from "@/utils/i18n.ts";
 
-// Used to provide a language-specific meta alternate link for SEO
-const locale = Astro.url.searchParams.get("lang") ?? getPreferredLocale(Astro.request.headers);
-const i18n = getTranslations(locale);
+// TODO: Currently only pre-rendered in English
+const i18n = getTranslations("en");
 ---
 
-<Layout title={i18n("new-document")} description={i18n("new-document")} locale={locale}>
-    <h1>{i18n("welcome")}</h1>
+<Layout title={i18n("new-document")} description={i18n("new-document")} locale={"en"}>
+    <div class="mt-32 mx-auto max-w-2xl text-center">
+        <h1 class="text-5xl font-extrabold tracking-tight leading-tight">
+            Predictable, reusable, and versioned documents
+        </h1>
+        <h2 class="mt-8 text-xl font-normal tracking-tight text-slate-500">
+            Paperloop let's you write documents with separated static and dynamic content, usable for contracts, invoices, offers, email templates, and more.
+        </h1>
+    </div>
 </Layout>
