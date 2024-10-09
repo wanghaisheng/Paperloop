@@ -60,7 +60,7 @@ const i18n = getTranslations(locale);
                     <div class="grid gap-2">
                         <div class="flex items-center">
                             <Label htmlFor="password">Password</Label>
-                            {type === "login" &&
+                            {type === "login" && false &&
                                 <a href="#" class="ml-auto inline-block text-sm underline">
                                     {i18n("forgot-password")}
                                 </a>
@@ -104,12 +104,20 @@ const i18n = getTranslations(locale);
                             </div>
                         </Button>
                     </div>
-                </div>
-                <div class="mt-4 text-center text-sm">
-                    {i18n(altType + "-alt-text")}
-                    <a href={`/auth/${altType}`} class="underline">
-                        {i18n(altType)}
-                    </a>
+                    <Alert>
+                        <CircleAlert className="h-4 w-4" />
+                        <AlertTitle>
+                            {i18n("Hinweis")}
+                        </AlertTitle>
+                        <AlertDescription>
+                            <span>
+                                {i18n(altType + "-alt-text")}
+                            </span>
+                            <a href={`/auth/${altType}`} class="underline">
+                                {i18n(altType)}
+                            </a>
+                        </AlertDescription>
+                    </Alert>
                 </div>
             </CardContent>
         </Card>
