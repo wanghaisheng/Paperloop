@@ -31,7 +31,7 @@ export interface Props {
             if (target instanceof ContentEditable) {
                 const { value, placeholder } = target;
                 values[placeholder] = value;
-                sessionStorage.setItem(id, JSON.stringify(values));
+                localStorage.setItem(id, JSON.stringify(values));
 
                 // Update inputs sharing the same placeholder (i.e., variable name)
                 for (const element of render.querySelectorAll(`[placeholder="${placeholder}"]`)) {

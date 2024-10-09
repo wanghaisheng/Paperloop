@@ -25,7 +25,7 @@ export class ContentEditable extends HTMLElement {
     render() {
         this.shadowRoot!.innerHTML = `
             <style>${this.styles}</style>
-            <div placeholder=${this.placeholder} contenteditable="true">${this.value}</div>
+            <div placeholder=${this.placeholder} contenteditable="plaintext-only">${this.value}</div>
         `;
     }
 

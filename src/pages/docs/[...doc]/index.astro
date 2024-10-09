@@ -103,7 +103,7 @@ const client = getClientTranslations(locale);
             });
         }, 1000);
 
-        let values = JSON.parse(sessionStorage.getItem(id) ?? "{}");
+        let values = JSON.parse(localStorage.getItem(id) ?? "{}");
         new EditorView({
             parent: input,
             doc: value,
@@ -137,7 +137,7 @@ const client = getClientTranslations(locale);
         });
 
         document.querySelector("button#clear")?.addEventListener("click", () => {
-            sessionStorage.setItem(id, JSON.stringify(values = {}));
+            localStorage.setItem(id, JSON.stringify(values = {}));
             output.innerHTML = markdownToHTML(value, values);
         });
 
