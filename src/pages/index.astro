@@ -25,7 +25,7 @@ const i18n = getTranslations("en");
             Paperloop let's you write documents with separated static and dynamic content: Easily manage invoices, offers, contracts, email templates, and more.
         </h1>
     </div>
-    <div class="mt-32 mx-auto max-w-7xl h-96 flex gap-2">
+    <div class="mt-32 mx-auto max-w-7xl h-[34rem] flex gap-2">
         <Card className="flex-1">
             <CardContent className="pt-6">
                 <div id="typeit"></div>
@@ -44,14 +44,30 @@ const i18n = getTranslations("en");
     import { updateRender } from "@/utils/markdown";
 
     new TypeIt("#typeit", {
-        speed: 100,
+        speed: 50,
         startDelay: 1000,
         afterStep: (instance: any) => {
             updateRender.setValue?.(instance.element.innerText.slice(0, -1));
         }
     })
-        .type("This is **markdown**!", { delay: 400 })
-        .type("<br>")
-        .type("With a [placeholder].", { delay: 400 })
+        .type("**Paperloop, Inc.**<br>", { delay: 400 })
+        .type("John Doe<br>", { delay: 400 })
+        .type("1234 Innovation Drive<br>", { delay: 400 })
+        .type("Metropolis, CA 90210<br>", { delay: 400 })
+        .type("<br>", { delay: 400 })
+        .type("[Firstname] [Lastname]<br>", { delay: 400 })
+        .type("[Address]<br>", { delay: 400 })
+        .type("<br>", { delay: 400 })
+        .type("### Welcome to Paperloop! 👋<br>", { delay: 400 })
+        .type("<br>", { delay: 400 })
+        .type("Dear [Firstname],<br>", { delay: 400 })
+        .type("<br>", { delay: 400 })
+        .type("Thank you very much for visiting our page! ", { delay: 1200 })
+        .type("You have just seen how to create a deterministic, reusable, and versioned letter template.<br>", { delay: 1200 })
+        .type("<br>", { delay: 400 })
+        .type("Create your free account and bring structure to your documents!<br>", { delay: 400 })
+        .type("<br>", { delay: 400 })
+        .type("With best regards,<br>", { delay: 400 })
+        .type("The Paperloop-Team", { delay: 400 })
         .go();
 </script>
