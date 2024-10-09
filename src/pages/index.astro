@@ -26,11 +26,32 @@ const i18n = getTranslations("en");
         </h1>
     </div>
     <div class="mt-32 mx-auto max-w-7xl h-96 flex gap-2">
-        <Card className="flex-1"></Card>
         <Card className="flex-1">
             <CardContent className="pt-6">
-                <DocumentRender value="### Test\n- Test"></DocumentRender>
+                <div id="typeit"></div>
+            </CardContent>
+        </Card>
+        <Card className="flex-1">
+            <CardContent className="pt-6">
+                <DocumentRender></DocumentRender>
             </CardContent>
         </Card>
     </div>
 </Layout>
+
+<script>
+    import TypeIt from "typeit";
+    import { updateRender } from "@/utils/markdown";
+
+    new TypeIt("#typeit", {
+        speed: 100,
+        startDelay: 1000,
+        afterStep: (instance: any) => {
+            updateRender.setValue?.(instance.element.innerText.slice(0, -1));
+        }
+    })
+        .type("This is **markdown**!", { delay: 400 })
+        .type("<br>")
+        .type("With a [placeholder].", { delay: 400 })
+        .go();
+</script>
