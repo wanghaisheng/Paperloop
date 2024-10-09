@@ -1,9 +1,11 @@
 ---
 import "@/styles/globals.css";
 import { actions } from "astro:actions";
+import { CircleAlert } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
     Card,
     CardHeader,
@@ -16,6 +18,7 @@ import AppleIcon from "@/icons/brands/apple.svg?raw";
 import GoogleIcon from "@/icons/brands/google.svg?raw";
 
 import Layout from "@/components/custom/layout.astro";
+import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
 const { cookies, redirect } = Astro;
 const accessToken = cookies.get("sb-access-token");
@@ -31,17 +34,21 @@ interface Props {
 
 const { type = "login" } = Astro.props;
 const altType = type === "login" ? "register" : "login";
+
+const result = Astro.getActionResult(actions[type]);
+const locale = getPreferredLocale(Astro.request.headers) ?? defaultLocale;
+const i18n = getTranslations(locale);
 ---
 
-<Layout title={type} description={type}>
+<Layout title={i18n(type)} description={type}>
     <form action={"/docs" + actions[type]} method="POST" class="h-full flex items-center justify-center">
         <Card className="max-w-sm">
             <CardHeader>
                 <CardTitle className="text-2xl">
-                    {type}
+                    {i18n(type)}
                 </CardTitle>
                 <CardDescription>
-                    Enter your email below to {type} to your account
+                    {i18n(type + "-text")}
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -55,14 +62,25 @@ const altType = type === "login" ? "register" : "login";
                             <Label htmlFor="password">Password</Label>
                             {type === "login" &&
                                 <a href="#" class="ml-auto inline-block text-sm underline">
-                                    Forgot your password?
+                                    {i18n("forgot-password")}
                                 </a>
                             }
                         </div>
-                        <Input name="password" type="password" required />
+                        <Input name="password" type="password" minLength={6} required />
                     </div>
+                    {result?.error &&
+                        <Alert className="bg-secondary">
+                            <CircleAlert className="h-4 w-4" />
+                            <AlertTitle>
+                                {i18n("error")}
+                            </AlertTitle>
+                            <AlertDescription>
+                                {i18n(type + "-error")}
+                            </AlertDescription>
+                        </Alert>
+                    }
                     <Button type="submit" className="w-full">
-                        {type}
+                        {i18n(type)}
                     </Button>
                     <div class="relative my-2">
                         <div class="absolute inset-0 flex items-center">
@@ -70,7 +88,7 @@ const altType = type === "login" ? "register" : "login";
                         </div>
                         <div class="relative flex justify-center text-xs uppercase">
                             <span class="bg-background px-2 text-muted-foreground">
-                                Or continue with
+                                {i18n("or-continue-with")}
                             </span>
                         </div>
                     </div>
@@ -88,9 +106,9 @@ const altType = type === "login" ? "register" : "login";
                     </div>
                 </div>
                 <div class="mt-4 text-center text-sm">
-                    Don't have an account?
+                    {i18n(altType + "-alt-text")}
                     <a href={`/auth/${altType}`} class="underline">
-                        {altType}
+                        {i18n(altType)}
                     </a>
                 </div>
             </CardContent>
