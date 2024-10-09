@@ -52,37 +52,44 @@ const i18n = getTranslations("en");
     import TypeIt from "typeit";
     import { updateRender } from "@/utils/markdown";
 
-    new TypeIt("#typeit", {
-        speed: 50,
-        deleteSpeed: 50,
-        startDelay: 1000,
-        afterStep: (instance: any) => {
-            updateRender.setValue?.(instance.element.innerText.replace("|", ""));
-        }
-    })
-        .type("**Paperloop, Inc.**\n", { delay: 400 })
-        .type("John Doe\n", { delay: 400 })
-        .type("1234 Innovation Drive\n", { delay: 400 })
-        .type("Metropolis, CA 90210\n", { delay: 400 })
-        // .move(null, { to: "START", delay: 800 })
-        // .type("text-center:", { delay: 1200 })
-        // .delete(7, { delay: 1200 })
-        // .type("right:", { delay: 1200 })
-        // .move(null, { to: "END" })
-        .type("\n", { delay: 400 })
-        .type("[Firstname] [Lastname]\n", { delay: 400 })
-        .type("[Address]\n", { delay: 400 })
-        .type("\n", { delay: 400 })
-        .type("### Welcome to Paperloop! 👋\n", { delay: 400 })
-        .type("\n", { delay: 400 })
-        .type("Dear [Firstname],\n", { delay: 400 })
-        .type("\n", { delay: 400 })
-        .type("Thank you very much for visiting our website! ", { delay: 1200 })
-        .type("You have just seen how to create a deterministic, reusable, and versioned letter template.\n", { delay: 1200 })
-        .type("\n", { delay: 400 })
-        .type("Create your free account and bring superpowers to your documents! 🚀\n", { delay: 400 })
-        .type("\n", { delay: 400 })
-        .type("Best,\n", { delay: 400 })
-        .type("Paperloop", { delay: 400 })
-        .go();
+    let typeit: TypeIt | undefined;
+    document.addEventListener("astro:page-load", () => {
+        typeit = new TypeIt("#typeit", {
+            speed: 25,
+            deleteSpeed: 50,
+            startDelay: 1000,
+            afterStep: (instance: any) => {
+                updateRender.setValue?.(instance.element.innerText.replace("|", ""));
+            }
+        })
+            .type("**Paperloop, Inc.**\n", { delay: 400 })
+            .type("John Doe\n", { delay: 400 })
+            .type("1234 Innovation Drive\n", { delay: 400 })
+            .type("Metropolis, CA 90210\n", { delay: 400 })
+            // .move(null, { to: "START", delay: 800 })
+            // .type("text-center:", { delay: 1200 })
+            // .delete(7, { delay: 1200 })
+            // .type("right:", { delay: 1200 })
+            // .move(null, { to: "END" })
+            .type("\n", { delay: 400 })
+            .type("[Firstname] [Lastname]\n", { delay: 400 })
+            .type("[Address]\n", { delay: 400 })
+            .type("\n", { delay: 400 })
+            .type("### Welcome to Paperloop! 👋\n", { delay: 400 })
+            .type("\n", { delay: 400 })
+            .type("Dear [Firstname],\n", { delay: 400 })
+            .type("\n", { delay: 400 })
+            .type("Thank you very much for visiting our website! ", { delay: 1200 })
+            .type("You've just seen how to create a structured, predictable, and reusable document template.\n", { delay: 1200 })
+            .type("\n", { delay: 400 })
+            .type("Create your free account and bring superpowers to your documents! 🚀\n", { delay: 400 })
+            .type("\n", { delay: 400 })
+            .type("Best,\n", { delay: 400 })
+            .type("Paperloop", { delay: 400 })
+            .go();
+    });
+
+    document.addEventListener("astro:before-preparation", () => {
+        typeit?.destroy();
+    });
 </script>
