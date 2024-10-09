@@ -28,7 +28,7 @@ const i18n = getTranslations("en");
     <div class="mt-32 mx-auto max-w-7xl h-[34rem] flex gap-2">
         <Card className="flex-1">
             <CardContent className="pt-6">
-                <div id="typeit"></div>
+                <div id="typeit" class="whitespace-pre-line"></div>
             </CardContent>
         </Card>
         <Card className="flex-1">
@@ -45,29 +45,35 @@ const i18n = getTranslations("en");
 
     new TypeIt("#typeit", {
         speed: 50,
+        deleteSpeed: 50,
         startDelay: 1000,
         afterStep: (instance: any) => {
-            updateRender.setValue?.(instance.element.innerText.slice(0, -1));
+            updateRender.setValue?.(instance.element.innerText.replace("|", ""));
         }
     })
-        .type("**Paperloop, Inc.**<br>", { delay: 400 })
-        .type("John Doe<br>", { delay: 400 })
-        .type("1234 Innovation Drive<br>", { delay: 400 })
-        .type("Metropolis, CA 90210<br>", { delay: 400 })
-        .type("<br>", { delay: 400 })
-        .type("[Firstname] [Lastname]<br>", { delay: 400 })
-        .type("[Address]<br>", { delay: 400 })
-        .type("<br>", { delay: 400 })
-        .type("### Welcome to Paperloop! 👋<br>", { delay: 400 })
-        .type("<br>", { delay: 400 })
-        .type("Dear [Firstname],<br>", { delay: 400 })
-        .type("<br>", { delay: 400 })
-        .type("Thank you very much for visiting our page! ", { delay: 1200 })
-        .type("You have just seen how to create a deterministic, reusable, and versioned letter template.<br>", { delay: 1200 })
-        .type("<br>", { delay: 400 })
-        .type("Create your free account and bring structure to your documents!<br>", { delay: 400 })
-        .type("<br>", { delay: 400 })
-        .type("With best regards,<br>", { delay: 400 })
-        .type("The Paperloop-Team", { delay: 400 })
+        .type("**Paperloop, Inc.**\n", { delay: 400 })
+        .type("John Doe\n", { delay: 400 })
+        .type("1234 Innovation Drive\n", { delay: 400 })
+        .type("Metropolis, CA 90210\n", { delay: 400 })
+        // .move(null, { to: "START", delay: 800 })
+        // .type("text-center:", { delay: 1200 })
+        // .delete(7, { delay: 1200 })
+        // .type("right:", { delay: 1200 })
+        // .move(null, { to: "END" })
+        .type("\n", { delay: 400 })
+        .type("[Firstname] [Lastname]\n", { delay: 400 })
+        .type("[Address]\n", { delay: 400 })
+        .type("\n", { delay: 400 })
+        .type("### Welcome to Paperloop! 👋\n", { delay: 400 })
+        .type("\n", { delay: 400 })
+        .type("Dear [Firstname],\n", { delay: 400 })
+        .type("\n", { delay: 400 })
+        .type("Thank you very much for visiting our website! ", { delay: 1200 })
+        .type("You have just seen how to create a deterministic, reusable, and versioned letter template.\n", { delay: 1200 })
+        .type("\n", { delay: 400 })
+        .type("Create your free account and bring superpowers to your documents! 🚀\n", { delay: 400 })
+        .type("\n", { delay: 400 })
+        .type("Best,\n", { delay: 400 })
+        .type("Paperloop", { delay: 400 })
         .go();
 </script>
