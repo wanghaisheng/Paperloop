@@ -7,7 +7,8 @@ const Document = defineTable({
         markdown: column.text({ default: String() }),
         version: column.number({ optional: true }),
         document: column.text(),
-        updated: column.date()
+        updated: column.date(),
+        user: column.text()
     }
 });
 

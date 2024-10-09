@@ -1,6 +1,6 @@
 ---
 import "@/styles/globals.css";
-import { db, Document, eq } from "astro:db";
+import { and, db, eq, Document } from "astro:db";
 import { Button } from "@/components/ui/button";
 import { Printer } from "lucide-react";
 
@@ -8,13 +8,17 @@ import Layout from "@/components/custom/layout.astro";
 import DocumentRender from "@/components/custom/document-render.astro";
 import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
+if (!Astro.locals.user) return Astro.redirect("/auth/login");
+
 const { doc } = Astro.params;
-if (!doc) return;
+if (!doc) return Astro.redirect("/404");
+
+const entry = await db.select().from(Document).where(
+    and(eq(Document.id, doc), eq(Document.user, Astro.locals.user.id))
+).get();
+if (!entry) return Astro.redirect("/404");
 
 const values = Object.fromEntries(new URLSearchParams(Astro.url.search));
-const entry = await db.select().from(Document).where(eq(Document.id, doc)).get();
-if (!entry) return;
-
 const locale = getPreferredLocale(Astro.request.headers) ?? defaultLocale;
 const i18n = getTranslations(locale);
 ---

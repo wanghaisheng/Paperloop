@@ -1,13 +1,18 @@
 ---
 import "@/styles/globals.css";
-import { db, desc, Document } from "astro:db";
+import { db, eq, desc, Document } from "astro:db";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 
 import Layout from "@/components/custom/layout.astro";
 import DocumentHeader from "@/components/custom/document-header.astro";
 import { getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
-const docs = await db.select().from(Document).orderBy(desc(Document.version));
+if (!Astro.locals.user) return Astro.redirect("/auth/login");
+
+const docs = await db.select().from(Document)
+    .where(eq(Document.user, Astro.locals.user.id))
+    .orderBy(desc(Document.version));
+
 const highesVersions = docs.reduce<typeof docs>((result, doc) => {
     if (!result.some(entry => entry.document === doc.document)) result.push(doc);
     return result;

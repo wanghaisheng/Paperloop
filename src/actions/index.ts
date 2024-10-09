@@ -1,5 +1,5 @@
 import { defineAction, ActionError } from "astro:actions";
-import { db, eq, Document } from "astro:db";
+import { and, db, eq, Document } from "astro:db";
 import { z } from "astro:schema";
 import { supabase } from "@/lib/supabase";
 
@@ -44,11 +44,14 @@ export const server = {
     }),
     createDocument: defineAction({
         accept: "json",
-        handler: async () => {
+        handler: async (_, { locals: { user }}) => {
+            if (!user) throw new ActionError({ code: "UNAUTHORIZED" });
+
             const [document] = await db.insert(Document).values({
                 id: crypto.randomUUID(),
                 document: crypto.randomUUID(),
-                updated: new Date()
+                updated: new Date(),
+                user: user.id
             }).returning();
 
             return { id: document.id };
@@ -62,19 +65,28 @@ export const server = {
             markdown: z.string().optional(),
             updated: z.date().optional()
         }),
-        handler: async ({ id, name, markdown, updated = new Date() }) => {
+        handler: async ({ id, name, markdown, updated = new Date() }, { locals: { user }}) => {
+            if (!user) throw new ActionError({ code: "UNAUTHORIZED" });
+
             await db.update(Document)
                 .set({ name, markdown, updated })
-                .where(eq(Document.id, id));
+                .where(and(eq(Document.id, id), eq(Document.user, user.id)));
         }
     }),
     publishDocument: defineAction({
         accept: "json",
         input: z.string(),
-        handler: async (id) => {
-            const [current] = await db.select().from(Document).where(eq(Document.id, id));
-            const versions = await db.select().from(Document).where(eq(Document.document, current.document));
+        handler: async (id, { locals: { user }}) => {
+            if (!user) throw new ActionError({ code: "UNAUTHORIZED" });
 
+            const [current] = await db.select().from(Document).where(
+                and(eq(Document.id, id), eq(Document.user, user.id))
+            );
+            if (!current) throw new ActionError({ code: "BAD_REQUEST" });
+
+            const versions = await db.select().from(Document).where(
+                eq(Document.document, current.document)
+            );
             await db.update(Document)
                 .set({
                     version: Math.max(...versions.map(entry => entry.version ?? 0), 0) + 1,
@@ -86,8 +98,14 @@ export const server = {
     duplicateDocument: defineAction({
         accept: "json",
         input: z.string(),
-        handler: async (id) => {
-            const [current] = await db.select().from(Document).where(eq(Document.id, id));
+        handler: async (id, { locals: { user }}) => {
+            if (!user) throw new ActionError({ code: "UNAUTHORIZED" });
+
+            const [current] = await db.select().from(Document).where(
+                and(eq(Document.id, id), eq(Document.user, user.id))
+            );
+            if (!current) throw new ActionError({ code: "BAD_REQUEST" });
+
             await db.insert(Document).values({
                 ...current,
                 id: crypto.randomUUID(),
@@ -99,17 +117,29 @@ export const server = {
     deleteDocument: defineAction({
         accept: "json",
         input: z.string(),
-        handler: async (id) => {
-            const [deleted] = await db.delete(Document).where(eq(Document.id, id)).returning();
-            const remaining = await db.select().from(Document).where(eq(Document.document, deleted.document));
+        handler: async (id, { locals: { user }}) => {
+            if (!user) throw new ActionError({ code: "UNAUTHORIZED" });
+
+            const [deleted] = await db.delete(Document).where(
+                and(eq(Document.id, id), eq(Document.user, user.id))
+            ).returning();
+            if (!deleted) throw new ActionError({ code: "BAD_REQUEST" });
+
+            const remaining = await db.select().from(Document).where(
+                eq(Document.document, deleted.document)
+            );
             return remaining.length ? `/docs/versions/${deleted.document}` : "/docs";
         }
     }),
     deleteDocuments: defineAction({
         accept: "json",
         input: z.string(),
-        handler: async (document) => {
-            await db.delete(Document).where(eq(Document.document, document));
+        handler: async (document, { locals: { user }}) => {
+            if (!user) throw new ActionError({ code: "UNAUTHORIZED" });
+
+            await db.delete(Document).where(
+                and(eq(Document.document, document), eq(Document.user, user.id))
+            );
             return "/docs";
         }
     })

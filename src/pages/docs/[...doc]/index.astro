@@ -1,6 +1,6 @@
 ---
 import "@/styles/globals.css";
-import { db, Document, eq } from "astro:db";
+import { and, db, eq, Document } from "astro:db";
 import { Eraser, Maximize } from "lucide-react";
 import { IconButton } from "@/components/ui/icon-button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -13,11 +13,15 @@ import ContentEditable from "@/components/custom/content-editable.astro";
 import DocumentRender from "@/components/custom/document-render.astro";
 import { defaultLocale, getClientTranslations, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
-const { doc } = Astro.params;
-if (!doc) return;
+if (!Astro.locals.user) return Astro.redirect("/auth/login");
 
-const entry = await db.select().from(Document).where(eq(Document.id, doc)).get();
-if (!entry) return;
+const { doc } = Astro.params;
+if (!doc) return Astro.redirect("/404");
+
+const entry = await db.select().from(Document).where(
+    and(eq(Document.id, doc), eq(Document.user, Astro.locals.user.id))
+).get();
+if (!entry) return Astro.redirect("/404");
 
 const locale = getPreferredLocale(Astro.request.headers) ?? defaultLocale;
 const i18n = getTranslations(locale);
