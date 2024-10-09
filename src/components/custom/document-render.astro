@@ -2,7 +2,6 @@
 import Particles from './particles.astro';
 
 export interface Props {
-    id: string;
     value?: string;
     values?: Record<string, string>;
 }
@@ -24,19 +23,20 @@ export interface Props {
         const render = document.getElementById("document-render");
         if (!wrapper || !render) return;
 
-        const { id, value = String(), values = {} } = getParticles<Props>(wrapper);
+        const { value = String(), values = {} } = getParticles<Props>(wrapper);
         render!.innerHTML = markdownToHTML(value, values);
 
         render.addEventListener("input", ({ target }) => {
             if (target instanceof ContentEditable) {
                 const { value, placeholder } = target;
                 values[placeholder] = value;
-                localStorage.setItem(id, JSON.stringify(values));
 
                 // Update inputs sharing the same placeholder (i.e., variable name)
                 for (const element of render.querySelectorAll(`[placeholder="${placeholder}"]`)) {
                     if (element !== target) element.setAttribute("value", value);
                 }
+
+                render.dispatchEvent(new CustomEvent("values-input", { detail: values }));
             }
         });
     });
