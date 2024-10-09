@@ -1,5 +1,6 @@
 ---
 import "@/styles/globals.css";
+import { actions } from "astro:actions";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -25,15 +26,15 @@ if (accessToken && refreshToken) {
 }
 
 interface Props {
-    type?: "signin" | "register";
+    type?: "login" | "register";
 };
 
-const { type = "signin" } = Astro.props;
-const altType = type === "signin" ? "register" : "signin";
+const { type = "login" } = Astro.props;
+const altType = type === "login" ? "register" : "login";
 ---
 
 <Layout title={type} description={type}>
-    <form action={`/api/auth/${type}`} method="POST" class="h-full flex items-center justify-center">
+    <form action={"/docs" + actions[type]} method="POST" class="h-full flex items-center justify-center">
         <Card className="max-w-sm">
             <CardHeader>
                 <CardTitle className="text-2xl">
@@ -52,7 +53,7 @@ const altType = type === "signin" ? "register" : "signin";
                     <div class="grid gap-2">
                         <div class="flex items-center">
                             <Label htmlFor="password">Password</Label>
-                            {type === "signin" &&
+                            {type === "login" &&
                                 <a href="#" class="ml-auto inline-block text-sm underline">
                                     Forgot your password?
                                 </a>

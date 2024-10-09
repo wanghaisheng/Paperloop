@@ -1,8 +1,47 @@
-import { defineAction } from "astro:actions";
+import { defineAction, ActionError } from "astro:actions";
 import { db, eq, Document } from "astro:db";
 import { z } from "astro:schema";
+import { supabase } from "@/lib/supabase";
 
 export const server = {
+    register: defineAction({
+        accept: "form",
+        input: z.object({
+            email: z.string(),
+            password: z.string()
+        }),
+        handler: async ({ email, password }, { cookies }) => {
+            const { data, error } = await supabase.auth.signUp({ email, password });
+            if (error || !data.session) throw new ActionError({ code: "BAD_REQUEST" });
+
+            // TODO: Evaluate whether to call login() action instead
+            const { access_token, refresh_token } = data.session;
+            cookies.set("sb-access-token", access_token, { path: "/" });
+            cookies.set("sb-refresh-token", refresh_token, { path: "/" });
+        }
+    }),
+    login: defineAction({
+        accept: "form",
+        input: z.object({
+            email: z.string(),
+            password: z.string()
+        }),
+        handler: async ({ email, password }, { cookies }) => {
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+            if (error) throw new ActionError({ code: "BAD_REQUEST" });
+        
+            const { access_token, refresh_token } = data.session;
+            cookies.set("sb-access-token", access_token, { path: "/" });
+            cookies.set("sb-refresh-token", refresh_token, { path: "/" });
+        }
+    }),
+    logout: defineAction({
+        accept: "form",
+        handler: (_, { cookies }) => {
+            cookies.delete("sb-access-token", { path: "/" });
+            cookies.delete("sb-refresh-token", { path: "/" });
+        }
+    }),
     createDocument: defineAction({
         accept: "json",
         handler: async () => {
