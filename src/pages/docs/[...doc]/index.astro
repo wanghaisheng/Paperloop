@@ -70,7 +70,7 @@ const client = getClientTranslations(locale);
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <DocumentRender></DocumentRender>
+                <DocumentRender id={entry.id}></DocumentRender>
             </CardContent>
         </Card>
     </div>
@@ -134,10 +134,6 @@ const client = getClientTranslations(locale);
                     name: nameInput.textContent ?? String()
                 });
             }
-        });
-
-        output.addEventListener("values-input", (event: any) => {
-            localStorage.setItem(id, JSON.stringify(values = event.detail));
         });
 
         document.querySelector("button#clear")?.addEventListener("click", () => {
