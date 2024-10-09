@@ -31,7 +31,7 @@ const client = getClientTranslations(locale);
     <div class="h-full flex flex-row-reverse gap-4">
         {docs.reverse().map((doc, index, all) =>
             <a href={`/docs/${doc.id}`} class="min-w-md max-w-lg" transition:name={doc.id}>
-                <Card className="flex flex-col h-full cursor-pointer">
+                <Card className="flex flex-col h-full overflow-auto cursor-pointer">
                     <CardHeader>
                         <DocumentHeader doc={doc}>
                             <DocumentMenu
