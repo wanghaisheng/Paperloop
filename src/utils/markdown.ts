@@ -19,7 +19,7 @@ export const markdownToHTML = (value: string, values: Record<string, string>) =>
         const [match, tailwind] = element.textContent?.match(/^([a-z0-9-]+):/) ?? [];
         if (!match) continue;
 
-        element.innerHTML = element.innerHTML.replace(match, String());
+        element.innerHTML = element.innerHTML.replace(/^([a-z0-9-]+):<br>?/, String());
         element.classList.add(tailwind);
     }
 
