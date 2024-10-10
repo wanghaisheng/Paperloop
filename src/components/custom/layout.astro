@@ -8,9 +8,10 @@ interface Props {
     title: string;
     description?: string;
     locale?: string;
+    continuous?: boolean;
 }
 
-const { title, description, locale } = Astro.props;
+const { title, description, locale, continuous } = Astro.props;
 ---
 
 <html class="h-full" lang={locale}>
@@ -28,7 +29,7 @@ const { title, description, locale } = Astro.props;
         <slot name="head"></slot>
         <ViewTransitions />
     </head>
-    <body class="antialiased h-full flex flex-col">
+    <body class={`antialiased ${!continuous ? "h-full flex flex-col" : ""}`}>
         <Navbar>
             <slot name="navbar"></slot>
         </Navbar>
