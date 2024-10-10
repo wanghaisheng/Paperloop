@@ -33,7 +33,8 @@ const i18n = getTranslations("en");
             Predictable, reusable, and versioned documents
         </h1>
         <h2 class="mt-8 text-xl font-normal tracking-tight text-slate-500 leading-snug">
-            Paperloop let's you write documents with separated static and dynamic content: Easily manage invoices, offers, contracts, marketing texts, and more. 100% free.
+            Paperloop let's you write documents with separated static and dynamic content.
+            Easily manage invoices, offers, contracts, marketing texts, and more. 100% free.
         </h1>
     </div>
     <div class="mt-32 mx-auto max-w-7xl h-[34rem] flex gap-2">
@@ -67,7 +68,7 @@ const i18n = getTranslations("en");
     document.addEventListener("astro:page-load", () => {
         typeit = new TypeIt("#typeit", {
             speed: 25,
-            startDelay: 1000,
+            startDelay: 2500,
             afterStep: (instance: any) => {
                 updateRender.setValue?.(instance.element.innerText.replace("|", ""));
             }
