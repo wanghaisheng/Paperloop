@@ -33,7 +33,8 @@ export class ContentEditable extends HTMLElement {
         super();
         const shadowRoot = this.attachShadow({ mode: "open" });
         this.addEventListener("input", () => {
-            this.value = shadowRoot.querySelector("div")?.textContent ?? String();
+            // Unset textContent due to issue with Safari (still containing a <br>)
+            this.value = shadowRoot.querySelector("div")!.textContent ||= String();
         });
     }
 
