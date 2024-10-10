@@ -1,6 +1,8 @@
 {
     "my-documents": "Meine Dokumente",
     "new-document": "Neues Dokument",
+    "no-documents": "Keine Dokumente",
+    "no-documents-text": "Es gibt noch keine Dokumente. Erstelle eines mit dem Button oben rechts.",
     "write-something": "Schreibe etwas ...",
     "draft": "Entwurf",
     "version": "Version",

@@ -4,6 +4,7 @@ import { db, eq, desc, Document } from "astro:db";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 
 import Layout from "@/components/custom/layout.astro";
+import Empty from "@/components/custom/empty.astro";
 import DocumentHeader from "@/components/custom/document-header.astro";
 import { getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
@@ -24,25 +25,35 @@ const i18n = getTranslations(locale);
 ---
 
 <Layout title={i18n("my-documents")} locale={locale}>
-    <div class="grid grid-cols-3 auto-rows-fr gap-4">
-        {highesVersions.map(doc =>
-            <a href={"docs/" + doc.id} transition:name={doc.id}>
-                <Card className="flex flex-col h-full cursor-pointer">
-                    <CardHeader>
-                        <DocumentHeader doc={doc}></DocumentHeader>
-                    </CardHeader>
-                    <CardContent className="flex-1">
-                        <article class="whitespace-pre-line line-clamp-3">
-                            {doc.markdown}
-                        </article>
-                    </CardContent>
-                    <CardFooter>
-                        <p class="leading-none text-sm text-gray-400">
-                            <time datetime={doc.updated.toISOString()}>&nbsp;</time>
-                        </p>
-                    </CardFooter>
-                </Card>
-            </a>
-        )}
-    </div>
+    {highesVersions.length
+        ? <div class="grid grid-cols-3 auto-rows-fr gap-4">
+            {highesVersions.map(doc =>
+                <a href={"docs/" + doc.id} transition:name={doc.id}>
+                    <Card className="flex flex-col h-full cursor-pointer">
+                        <CardHeader>
+                            <DocumentHeader doc={doc}></DocumentHeader>
+                        </CardHeader>
+                        <CardContent className="flex-1">
+                            <article class="whitespace-pre-line line-clamp-3">
+                                {doc.markdown}
+                            </article>
+                        </CardContent>
+                        <CardFooter>
+                            <p class="leading-none text-sm text-gray-400">
+                                <time datetime={doc.updated.toISOString()}>&nbsp;</time>
+                            </p>
+                        </CardFooter>
+                    </Card>
+                </a>
+            )}
+        </div>
+        : <Empty>
+            <div slot="title">
+                {i18n("no-documents")}
+            </div>
+            <div slot="text">
+                {i18n("no-documents-text")}
+            </div>
+        </Empty>
+    }
 </Layout>
