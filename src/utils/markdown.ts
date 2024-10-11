@@ -19,7 +19,7 @@ export const markdownToHTML = (value: string, values: Record<string, string>) =>
         const [matches] = element.textContent?.match(/^(([a-z0-9-]+):)+/) ?? [];
         for (const match of matches?.split(":").filter(Boolean) ?? []) {
             element.innerHTML = element.innerHTML.replace(/^([a-z0-9-]+):(<br>)?/, String());
-            element.classList.add(match);
+            element.classList.add(match.replace("img-", "prose-img:"));
         }
     }
 
