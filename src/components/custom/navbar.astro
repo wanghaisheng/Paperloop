@@ -29,7 +29,8 @@ const i18n = getTranslations(locale);
         <slot></slot>
         {Astro.locals.user
             ? <Button id="add" size="sm" variant="outline">
-                <span>{i18n("new-document")}</span>
+                <span class="md:hidden">{i18n("new")}</span>
+                <span class="hidden md:block">{i18n("new-document")}</span>
             </Button>
             <form action={actions.logout} method="post">
                 <Button size="icon" variant="outline" className="h-9 w-9 rounded-full group">

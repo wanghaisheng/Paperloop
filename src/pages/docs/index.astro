@@ -25,7 +25,7 @@ const i18n = getTranslations(locale);
 
 <Layout title={i18n("my-documents")} locale={locale}>
     {distinct.length
-        ? <div class="grid grid-cols-3 auto-rows-fr gap-4">
+        ? <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-4">
             {distinct.map(doc =>
                 <a href={"docs/" + doc.id} transition:name={doc.id}>
                     <Card className="flex flex-col h-full cursor-pointer">
