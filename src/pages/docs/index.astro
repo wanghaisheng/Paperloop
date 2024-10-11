@@ -12,12 +12,11 @@ if (!Astro.locals.user) return Astro.redirect("/auth/login");
 
 const docs = await db.select().from(Document)
     .where(eq(Document.user, Astro.locals.user.id))
-    .orderBy(desc(Document.version));
+    .orderBy(desc(Document.updated));
 
-const highesVersions = docs.reduce<typeof docs>((result, doc) => {
-    if (!result.some(entry => entry.document === doc.document)) result.push(doc);
-    return result;
-}, []);
+const distinct = docs.filter((doc, index) => {
+    return index === docs.findIndex(entry => entry.document === doc.document);
+});
 
 // Used to provide a language-specific meta alternate link for SEO
 const locale = Astro.url.searchParams.get("lang") ?? getPreferredLocale(Astro.request.headers);
@@ -25,9 +24,9 @@ const i18n = getTranslations(locale);
 ---
 
 <Layout title={i18n("my-documents")} locale={locale}>
-    {highesVersions.length
+    {distinct.length
         ? <div class="grid grid-cols-3 auto-rows-fr gap-4">
-            {highesVersions.map(doc =>
+            {distinct.map(doc =>
                 <a href={"docs/" + doc.id} transition:name={doc.id}>
                     <Card className="flex flex-col h-full cursor-pointer">
                         <CardHeader>
