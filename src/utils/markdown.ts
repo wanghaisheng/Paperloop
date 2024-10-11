@@ -15,12 +15,12 @@ export const markdownToHTML = (value: string, values: Record<string, string>) =>
     // TODO: Evaluate whether to create markdown-it plugin
     const html = md.render(replaced);
     const parsed = new DOMParser().parseFromString(html, "text/html");
-    for (const element of parsed.querySelectorAll("h1, h2, h3, p")) {
-        const [match, tailwind] = element.textContent?.match(/^([a-z0-9-]+):/) ?? [];
-        if (!match) continue;
-
-        element.innerHTML = element.innerHTML.replace(/^([a-z0-9-]+):<br>?/, String());
-        element.classList.add(tailwind);
+    for (const element of parsed.getElementsByTagName("p")) {
+        const [matches] = element.textContent?.match(/^(([a-z0-9-]+):)+/) ?? [];
+        for (const match of matches?.split(":").filter(Boolean) ?? []) {
+            element.innerHTML = element.innerHTML.replace(/^([a-z0-9-]+):(<br>)?/, String());
+            element.classList.add(match);
+        }
     }
 
     return new XMLSerializer().serializeToString(parsed);
