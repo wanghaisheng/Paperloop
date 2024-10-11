@@ -10,7 +10,7 @@ import DocumentRender from "@/components/custom/document-render.astro";
 import { getTranslations } from "@/utils/i18n.ts";
 
 const title = "Predictable, reusable, and versioned documents";
-const description = "Paperloop let's you write documents with separated static and dynamic content. Easily manage invoices, offers, contracts, marketing texts, and more. 100% free.";
+const description = "Paperloop let's you write documents with separated static and dynamic content. Easily manage invoices, offers, contracts, resumes, and more using Markdown.";
 
 // TODO: Currently only pre-rendered in English
 const i18n = getTranslations("en");
@@ -48,11 +48,17 @@ const i18n = getTranslations("en");
     <hr class="mt-16 mb-6">
     <div class="flex justify-between text-sm text-slate-500">
         <p>
-            © 2024 Paperloop. All rights reserved.
+            © 2024 Paperloop.
         </p>
-        <a href="/imprint">
-            {i18n("imprint")}
-        </a>
+        <div class="flex gap-2">
+            <a href="/imprint">
+                {i18n("imprint")}
+            </a>
+            •
+            <a href="https://github.com/leogreu/Paperloop">
+                GitHub
+            </a>
+        </div>
     </div>
 </Layout>
 
@@ -82,7 +88,7 @@ const i18n = getTranslations("en");
             .type("Dear [Firstname],<br>", { delay: 400 })
             .type("<br>", { delay: 400 })
             .type("Thank you very much for visiting our website! ", { delay: 1200 })
-            .type("You've just seen how to create a structured, predictable, and reusable document template.<br>", { delay: 1200 })
+            .type("You've just seen how to create a structured and reusable document template using Markdown.<br>", { delay: 1200 })
             .type("<br>", { delay: 400 })
             .type("Create your free account and bring superpowers to your documents! 🚀<br>", { delay: 400 })
             .type("<br>", { delay: 400 })
