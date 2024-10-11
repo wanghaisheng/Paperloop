@@ -7,7 +7,7 @@ const md = markdownit({
 
 export const markdownToHTML = (value: string, values: Record<string, string>) => {
     // TODO: Evaluate whether to create markdown-it plugin
-    const replaced = value.replace(/(\[(\S+)\])(?!\()/g, (_, key) => {
+    const replaced = value.replace(/\[(\S+)\](?!\()/g, (_, key) => {
         const value = values[key] ?? String();
         return `<content-editable value="${value}" placeholder="${key}"></content-editable>`;
     });
