@@ -64,15 +64,11 @@ export interface Props {
 </script>
 
 <style is:inline>
-    .prose h1, .prose h2, .prose h3, .prose p {
+    .prose h1, .prose h2, .prose h3, .prose p, .prose p[class] img {
         margin-top: 0;
     }
 
-    .prose p.text-center img {
-        margin-inline: auto;
-    }
-
-    .prose p.text-right img {
-        margin-left: auto;
+    .prose p[class] img {
+        display: inline-block;
     }
 </style>
