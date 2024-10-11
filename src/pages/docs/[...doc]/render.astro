@@ -28,7 +28,7 @@ const i18n = getTranslations(locale);
         {i18n("print")}
     </Button>
     <div class="mt-12">
-        <DocumentRender id={entry.id} value={entry.markdown}></DocumentRender>
+        <DocumentRender doc={entry.document} value={entry.markdown}></DocumentRender>
     </div>
 </Layout>
 

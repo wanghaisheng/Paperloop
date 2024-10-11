@@ -2,7 +2,7 @@
 import Particles from './particles.astro';
 
 export interface Props {
-    id?: string;
+    doc?: string;
     value?: string;
 }
 ---
@@ -23,10 +23,10 @@ export interface Props {
         const render = document.getElementById("document-render");
         if (!wrapper || !render) return;
 
-        let { id, value = String() } = getParticles<Props>(wrapper);
+        let { doc, value = String() } = getParticles<Props>(wrapper);
 
         let values: Record<string, string> = {
-            ...(id && JSON.parse(localStorage.getItem(id) ?? "{}")),
+            ...(doc && JSON.parse(localStorage.getItem(doc) ?? "{}")),
             ...Object.fromEntries(new URLSearchParams(location.search))
         };
 
@@ -45,14 +45,14 @@ export interface Props {
         updateRender.setValues = input => {
             values = input;
             renderDocument();
-            if (id) localStorage.setItem(id, JSON.stringify(values));
+            if (doc) localStorage.setItem(doc, JSON.stringify(values));
         }
 
         render.addEventListener("input", ({ target }) => {
             if (target instanceof ContentEditable) {
                 const { value, placeholder } = target;
                 values[placeholder] = value;
-                if (id) localStorage.setItem(id, JSON.stringify(values));
+                if (doc) localStorage.setItem(doc, JSON.stringify(values));
 
                 // Update inputs sharing the same placeholder (i.e., variable name)
                 for (const element of render.querySelectorAll(`[placeholder="${placeholder}"]`)) {
