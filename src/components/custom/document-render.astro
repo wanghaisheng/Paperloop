@@ -71,4 +71,16 @@ export interface Props {
     .prose p[class] img {
         display: inline-block;
     }
+
+    @media print {
+        @page {
+            margin: 2cm;
+        }
+
+        .prose hr {
+            visibility: hidden;
+            margin: unset;
+            page-break-after: always;
+        }
+    }
 </style>

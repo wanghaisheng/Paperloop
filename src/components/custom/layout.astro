@@ -34,7 +34,7 @@ const { title, description, locale, continuous } = Astro.props;
         <Navbar>
             <slot name="navbar"></slot>
         </Navbar>
-        <main class="flex-1 p-8 overflow-auto">
+        <main class="flex-1 p-4 md:p-8 overflow-auto">
             <slot></slot>
         </main>
     </body>
@@ -55,6 +55,7 @@ const { title, description, locale, continuous } = Astro.props;
     @media print { 
         main {
             overflow: visible;
+            padding: 0;
         }
     }
 </style>
