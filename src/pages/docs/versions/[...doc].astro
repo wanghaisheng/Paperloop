@@ -3,7 +3,7 @@ import "@/styles/globals.css";
 import { and, db, eq, Document } from "astro:db";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { DocumentMenu } from "@/components/ui/document-menu";
-import { Diff } from "diff";
+import { diffWords } from "diff";
 
 import Layout from "@/components/custom/layout.astro";
 import DocumentHeader from "@/components/custom/document-header.astro";
@@ -19,7 +19,6 @@ const docs = await db.select().from(Document).where(
 );
 if (!docs) return;
 
-const diff = new Diff();
 const locale = getPreferredLocale(Astro.request.headers) ?? defaultLocale;
 const i18n = getTranslations(locale);
 
@@ -48,7 +47,7 @@ const client = getClientTranslations(locale);
                         <article
                             class="whitespace-pre-line"
                             set:html={
-                                diff.diff(all.at(index + 1)?.markdown ?? doc.markdown, doc.markdown)
+                                diffWords(all.at(index + 1)?.markdown ?? doc.markdown, doc.markdown)
                                     .map(entry => {
                                         const highlight = entry.added
                                             ? "text-green-600 underline"
