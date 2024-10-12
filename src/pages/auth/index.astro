@@ -18,15 +18,10 @@ import Layout from "@/components/custom/layout.astro";
 import GoogleIcon from "@/icons/brands/google.svg?raw";
 import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
-interface Props {
-    type?: "login" | "register";
-};
-
-const { type = "login" } = Astro.props;
-
-const result = Astro.getActionResult(actions[type]);
+const result = Astro.getActionResult(actions.auth);
 if (result?.data) return Astro.redirect(result.data);
 
+const type = Astro.url.searchParams.get("type") || "login";
 const locale = getPreferredLocale(Astro.request.headers) ?? defaultLocale;
 const i18n = getTranslations(locale);
 ---
@@ -43,7 +38,7 @@ const i18n = getTranslations(locale);
                 </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
-                <form action={"/docs" + actions[type]} method="POST" class="flex flex-col gap-4">
+                <form action={"/docs" + actions.auth} method="POST" class="flex flex-col gap-4">
                     <div class="grid gap-2">
                         <Label htmlFor="email">Email</Label>
                         <Input name="email" type="email" required/>
@@ -70,7 +65,7 @@ const i18n = getTranslations(locale);
                             </AlertDescription>
                         </Alert>
                     }
-                    <Button type="submit" className="w-full">
+                    <Button type="submit" name="provider" value={type} className="w-full">
                         {i18n(type)}
                     </Button>
                 </form>
@@ -84,7 +79,7 @@ const i18n = getTranslations(locale);
                         </span>
                     </div>
                 </div>
-                <form action={actions.login} method="POST" data-astro-reload>
+                <form action={actions.auth} method="POST" data-astro-reload>
                     <div class="flex gap-2">
                         <Button type="submit" name="provider" value="google" variant="outline" className="w-full">
                             <div class="mr-2 flex h-4 w-4 fill-primary">

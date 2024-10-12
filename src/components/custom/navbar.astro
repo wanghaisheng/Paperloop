@@ -38,12 +38,12 @@ const i18n = getTranslations(locale);
                     <LogOut strokeWidth="2.25" className="hidden h-4 w-4 group-hover:block" />
                 </Button>
             </form>
-            : <a href="/auth/login">
+            : <a href="/auth">
                 <Button size="sm" variant="secondary">
                     <span>{i18n("login")}</span>
                 </Button>
             </a>
-            <a href="/auth/register">
+            <a href="/auth?type=register">
                 <Button size="sm">
                     <span>{i18n("start-now")}</span>
                 </Button>

@@ -4,31 +4,15 @@ import { z } from "astro:schema";
 import { supabase } from "@/lib/supabase";
 
 export const server = {
-    // TODO: Probably merge register and login and differentiate via type property, also in page
-    register: defineAction({
+    auth: defineAction({
         accept: "form",
         input: z.object({
-            email: z.string(),
-            password: z.string()
-        }),
-        handler: async ({ email, password }, { cookies }) => {
-            const { data, error } = await supabase.auth.signUp({ email, password });
-            if (error || !data.session) throw new ActionError({ code: "BAD_REQUEST" });
-
-            // TODO: Evaluate whether to call login() action instead
-            const { access_token, refresh_token } = data.session;
-            cookies.set("sb-access-token", access_token, { path: "/" });
-            cookies.set("sb-refresh-token", refresh_token, { path: "/" });
-        }
-    }),
-    login: defineAction({
-        accept: "form",
-        input: z.object({
+            type: z.string().optional(),
             email: z.string().optional(),
             password: z.string().optional(),
             provider: z.string().optional()
         }),
-        handler: async ({ email, password, provider }, context) => {
+        handler: async ({ type, email, password, provider }, context) => {
             if (provider === "google") {
                 const { data, error } = await supabase.auth.signInWithOAuth({
                     provider,
@@ -39,10 +23,11 @@ export const server = {
 
                 if (error) throw new ActionError({ code: "BAD_REQUEST" });
                 return data.url;
-            } else if (email && password) {
-                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-                if (error) throw new ActionError({ code: "BAD_REQUEST" });
-            
+            } else if (type && email && password) {
+                const { data, error } = await supabase
+                    .auth[type === "login" ? "signInWithPassword" : "signUp"]({ email, password });
+                if (error || !data.session) throw new ActionError({ code: "BAD_REQUEST" });
+
                 const { access_token, refresh_token } = data.session;
                 context.cookies.set("sb-access-token", access_token, { path: "/" });
                 context.cookies.set("sb-refresh-token", refresh_token, { path: "/" });
