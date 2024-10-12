@@ -4,42 +4,39 @@ import { z } from "astro:schema";
 import { supabase } from "@/lib/supabase";
 
 export const server = {
-    register: defineAction({
+    auth: defineAction({
         accept: "form",
         input: z.object({
-            email: z.string(),
-            password: z.string()
+            type: z.string().optional(),
+            email: z.string().optional(),
+            password: z.string().optional(),
+            provider: z.string().optional()
         }),
-        handler: async ({ email, password }, { cookies }) => {
-            const { data, error } = await supabase.auth.signUp({ email, password });
-            if (error || !data.session) throw new ActionError({ code: "BAD_REQUEST" });
+        handler: async ({ type, email, password, provider }, context) => {
+            if (provider === "google") {
+                const { data, error } = await supabase.auth.signInWithOAuth({
+                    provider,
+                    options: {
+                        redirectTo: `${context.url.origin}/api/auth/callback`
+                    }
+                });
 
-            // TODO: Evaluate whether to call login() action instead
-            const { access_token, refresh_token } = data.session;
-            cookies.set("sb-access-token", access_token, { path: "/" });
-            cookies.set("sb-refresh-token", refresh_token, { path: "/" });
-        }
-    }),
-    login: defineAction({
-        accept: "form",
-        input: z.object({
-            email: z.string(),
-            password: z.string()
-        }),
-        handler: async ({ email, password }, { cookies }) => {
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) throw new ActionError({ code: "BAD_REQUEST" });
-        
-            const { access_token, refresh_token } = data.session;
-            cookies.set("sb-access-token", access_token, { path: "/" });
-            cookies.set("sb-refresh-token", refresh_token, { path: "/" });
-        }
-    }),
-    logout: defineAction({
-        accept: "form",
-        handler: (_, { cookies }) => {
-            cookies.delete("sb-access-token", { path: "/" });
-            cookies.delete("sb-refresh-token", { path: "/" });
+                if (error) throw new ActionError({ code: "BAD_REQUEST" });
+                return data.url;
+            } else if (type && email && password) {
+                const { data, error } = await supabase
+                    .auth[type === "login" ? "signInWithPassword" : "signUp"]({ email, password });
+                if (error || !data.session) throw new ActionError({ code: "BAD_REQUEST" });
+
+                const { access_token, refresh_token } = data.session;
+                context.cookies.set("sb-access-token", access_token, { path: "/" });
+                context.cookies.set("sb-refresh-token", refresh_token, { path: "/" });
+
+                return "/docs";
+            } else {
+                context.cookies.delete("sb-access-token", { path: "/" });
+                context.cookies.delete("sb-refresh-token", { path: "/" });
+            }
         }
     }),
     createDocument: defineAction({
