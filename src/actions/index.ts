@@ -33,14 +33,10 @@ export const server = {
                 context.cookies.set("sb-refresh-token", refresh_token, { path: "/" });
 
                 return "/docs";
+            } else {
+                context.cookies.delete("sb-access-token", { path: "/" });
+                context.cookies.delete("sb-refresh-token", { path: "/" });
             }
-        }
-    }),
-    logout: defineAction({
-        accept: "form",
-        handler: (_, { cookies }) => {
-            cookies.delete("sb-access-token", { path: "/" });
-            cookies.delete("sb-refresh-token", { path: "/" });
         }
     }),
     createDocument: defineAction({
