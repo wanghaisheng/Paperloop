@@ -84,7 +84,7 @@ const i18n = getTranslations(locale);
                         </span>
                     </div>
                 </div>
-                <form action={actions.login} method="POST">
+                <form action={actions.login} method="POST" data-astro-reload>
                     <div class="flex gap-2">
                         <Button type="submit" name="provider" value="google" variant="outline" className="w-full">
                             <div class="mr-2 flex h-4 w-4 fill-primary">
