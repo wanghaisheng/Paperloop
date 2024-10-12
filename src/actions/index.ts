@@ -4,6 +4,7 @@ import { z } from "astro:schema";
 import { supabase } from "@/lib/supabase";
 
 export const server = {
+    // TODO: Probably merge register and login and differentiate via type property, also in page
     register: defineAction({
         accept: "form",
         input: z.object({
@@ -32,13 +33,12 @@ export const server = {
                 const { data, error } = await supabase.auth.signInWithOAuth({
                     provider,
                     options: {
-                        redirectTo: `${context.site?.host}/api/auth/callback`
+                        redirectTo: `${context.url.origin}/api/auth/callback`
                     }
                 });
 
                 if (error) throw new ActionError({ code: "BAD_REQUEST" });
-
-                // TODO: Redirect to data.url
+                return data.url;
             } else if (email && password) {
                 const { data, error } = await supabase.auth.signInWithPassword({ email, password });
                 if (error) throw new ActionError({ code: "BAD_REQUEST" });

@@ -25,6 +25,8 @@ interface Props {
 const { type = "login" } = Astro.props;
 
 const result = Astro.getActionResult(actions[type]);
+if (result?.data) return Astro.redirect(result.data);
+
 const locale = getPreferredLocale(Astro.request.headers) ?? defaultLocale;
 const i18n = getTranslations(locale);
 ---
