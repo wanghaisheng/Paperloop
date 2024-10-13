@@ -34,7 +34,7 @@ const i18n = getTranslations(locale);
                         </CardHeader>
                         <CardContent className="flex-1">
                             <article class="whitespace-pre-line line-clamp-3">
-                                {doc.markdown}
+                                {doc.markdown.slice(0, 200)}
                             </article>
                         </CardContent>
                         <CardFooter>
