@@ -18,6 +18,9 @@ import Layout from "@/components/custom/layout.astro";
 import GoogleIcon from "@/icons/brands/google.svg?raw";
 import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
 
+// For authenticated users, show docs
+if (Astro.locals.user) return Astro.redirect("/docs");
+
 const result = Astro.getActionResult(actions.auth);
 if (result?.data) return Astro.redirect(result.data);
 
