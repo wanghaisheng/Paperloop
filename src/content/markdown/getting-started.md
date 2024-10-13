@@ -88,7 +88,7 @@ Use `console.log()` in JavaScript to display output.
 
 ### 7.2 Code Blocks
 
-For multi-line code blocks, use triple backticks (```), and optionally specify the language for syntax highlighting.
+For multi-line code blocks, use triple backticks (```).
 
 ```js
 const greet = (name) => {
@@ -100,13 +100,13 @@ const greet = (name) => {
 
 ## 8. Horizontal rule
 
-You can create horizontal lines or separators by using three or more dashes (---), asterisks (***), or underscores (___). Horizontal rules will result in a page break when printing.
+You can create horizontal lines or separators by using three or more dashes (`---`), asterisks (`***`), or underscores (`___`). Horizontal rules will result in a page break when printing.
 
 ---
 
 ## 9. Tables
 
-Tables can be created using pipes (|) and dashes (-) to separate columns and rows.
+Tables can be created using pipes (`|`) and dashes (`-`) to separate columns and rows.
 
 | Column 1 | Column 2 |
 |----------|----------|
