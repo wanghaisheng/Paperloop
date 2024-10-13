@@ -1,8 +1,8 @@
 # Welcome 👋
 
-Markdown is a lightweight markup language that allows you to format text easily using plain text syntax. It is widely used for writing documentation, blog posts, and even books. The key advantage of Markdown is that it's simple, readable, and can be converted to HTML or other formats with minimal effort.
+In Paperloop, you can write documents using Markdown, a lightweight and popular markup language. Markdown is widely used for writing websites, blog posts, presentations, and books. It allows you to format documents easily using plain text.
 
-In this article, we'll explore the essential features of Markdown by showcasing various text formatting options and elements.
+Since not everyone is familiar with Markdown, this article explores the essential features by showcasing various text formatting options and elements.
 
 ---
 
@@ -56,6 +56,10 @@ To add a link, you can use the following syntax: `[Link Text](URL)`.
 
 [Visit Paperloop](https://paperloop.io)
 
+You can also link to different headings on the current page:
+
+[Go to Headings](#1.-headings)
+
 ---
 
 ## 5. Images
@@ -63,6 +67,8 @@ To add a link, you can use the following syntax: `[Link Text](URL)`.
 You can insert images using similar syntax to links, but with an exclamation mark `!` in front: `![Alt Text](Image URL)`.
 
 ![Paperloop](https://paperloop.io/og-image.png)
+
+If you want to align or size your images, please refer to section [Alignment](#11.-alignment).
 
 ---
 
@@ -116,4 +122,36 @@ Tables can be created using pipes (`|`) and dashes (`-`) to separate columns and
 
 ## 10. Placeholders
 
+Paperloop allows to define placeholders in your documents that you can dynamically fill for each document. This results in a separation of static and dynamic content. Usually, the majority of a document is static while only a few parts are dynamic. This separation allows you to find a generic structure for your document that fits most use cases and then only adjust those parts that don't.
 
+To define a placeholder, simply wrap a word in square brackets `[]`.
+
+**Example:** Hello, [Name]!
+
+When you use a placeholder with the same variable name, it will get the same value automatically.
+
+**Example:** Thank you for reading this, [Name].
+
+## 11. Alignment
+
+Paperloop also allows you to align text using [Tailwind CSS](https://tailwindcss.com/) classes. If you want a sentence or word to be right-aligned, simple write `text-right:` in front of it.
+
+text-right: This text is on the right
+
+You can also align an multi-line paragraphs:
+
+text-center:
+**This is a centered text block**
+with text on multiple lines.
+
+You can use the same syntax to align images. Together with the option to resize them using `img-w-8` (where 8 stands for a size unit in [Tailwind](https://tailwindcss.com/docs/width)), you can create a custom letter header for your company. The suffix `img-mb-2:` lets you specify the space below an image (margin bottom, as explained [here](https://tailwindcss.com/docs/margin)).
+
+text-right:img-w-8:img-mb-2:
+![Logo](/favicon.svg)
+**Paperloop, Inc.**
+John Doe
+Metropolis, CA 90210
+
+---
+
+That's it for now. We hope you could learn something. If you have any questions left, just send us an email or open an issue an [GitHub](https://github.com/leogreu/Paperloop/issues).

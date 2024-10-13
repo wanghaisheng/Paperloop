@@ -1,9 +1,10 @@
 import markdownit from "markdown-it";
+import anchor from "markdown-it-anchor";
 
 const md = markdownit({
     html: true,
     breaks: true
-});
+}).use(anchor);
 
 export const markdownToHTML = (value: string, values: Record<string, string>) => {
     // TODO: Evaluate whether to create markdown-it plugin
