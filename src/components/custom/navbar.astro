@@ -32,18 +32,18 @@ const i18n = getTranslations(locale);
                 <span class="md:hidden">{i18n("new")}</span>
                 <span class="hidden md:block">{i18n("new-document")}</span>
             </Button>
-            <form action={actions.auth} method="post">
+            <form action={actions.auth} method="post" data-astro-reload>
                 <Button size="icon" variant="outline" className="h-9 w-9 rounded-full group">
                     <User strokeWidth="2.25" className="h-4 w-4 group-hover:hidden" />
                     <LogOut strokeWidth="2.25" className="hidden h-4 w-4 group-hover:block" />
                 </Button>
             </form>
-            : <a href="/auth">
+            : <a href="/auth" data-astro-reload>
                 <Button size="sm" variant="secondary">
                     <span>{i18n("login")}</span>
                 </Button>
             </a>
-            <a href="/auth?type=register">
+            <a href="/auth?type=register" data-astro-reload>
                 <Button size="sm">
                     <span>{i18n("start-now")}</span>
                 </Button>
