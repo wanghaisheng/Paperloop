@@ -8,12 +8,13 @@ In this article, we'll explore the essential features of Markdown by showcasing 
 
 ## 1. Headings
 
-Headings in Markdown are created by using the `#` symbol. The number of `#` symbols denotes the level of the heading, with one `#` for the largest heading and up to four `####` for the smallest heading.
+Headings in Markdown are created by using the `#` symbol. The number of `#` symbols denotes the level of the heading, with one `#` for the largest heading and up to five `#####` for the smallest heading.
 
 # Heading 1
 ## Heading 2
 ### Heading 3
 #### Heading 4
+##### Heading 5
 
 ---
 
@@ -25,10 +26,6 @@ You can emphasize text by making it **bold**, *italic*, or ***bold and italic***
 - *Italic*: Use `*text*` or `_text_`
 - ***Bold and italic***: Use `***text***` or `___text___`
 
-**This is bold**  
-*This is italic*  
-***This is bold and italic***
-
 ---
 
 ## 3. Lists
@@ -37,19 +34,19 @@ You can emphasize text by making it **bold**, *italic*, or ***bold and italic***
 
 To create unordered lists, use `-`, `+`, or `*` followed by a space:
 
-- Item 1
-- Item 2
-  - Subitem 2.1
-  - Subitem 2.2
+- Item
+- Item
+  - Subitem
+  - Subitem
 
 ### 3.2 Ordered Lists
 
 Ordered lists are created by simply using numbers followed by periods (`1.`, `2.`, `3.`, etc.).
 
-1. First item
-2. Second item
-   1. Subitem 2.1
-   2. Subitem 2.2
+1. Item
+2. Item
+   1. Subitem
+   2. Subitem
 
 ---
 
@@ -65,7 +62,7 @@ To add a link, you can use the following syntax: `[Link Text](URL)`.
 
 You can insert images using similar syntax to links, but with an exclamation mark `!` in front: `![Alt Text](Image URL)`.
 
-![Markdown Logo](https://markdown-here.com/img/icon256.png)
+![Paperloop](https://paperloop.io/og-image.png)
 
 ---
 
