@@ -154,4 +154,4 @@ Metropolis, CA 90210
 
 ---
 
-That's it for now. We hope you could learn something. If you have any questions left, just send us an email or open an issue an [GitHub](https://github.com/leogreu/Paperloop/issues).
+That's it for now. We hope you could learn something. If you have any questions left, just send us an email or open an issue over at [GitHub](https://github.com/leogreu/Paperloop/issues).
