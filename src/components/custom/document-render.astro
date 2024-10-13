@@ -72,6 +72,17 @@ export interface Props {
         display: inline-block;
     }
 
+    .prose :not(pre) code {
+        padding: 0.125em 0.25em;;
+        border: 1px solid hsl(var(--border));
+        border-radius: 0.25em;
+        background-color: hsl(var(--secondary));
+    }
+
+    .prose code::before, .prose code::after {
+        content: "";
+    }
+
     @media print {
         @page {
             margin: 2cm;
