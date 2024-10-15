@@ -12,7 +12,7 @@ import Particles from "@/components/custom/particles.astro";
 import DocumentHeader from "@/components/custom/document-header.astro";
 import ContentEditable from "@/components/custom/content-editable.astro";
 import DocumentRender from "@/components/custom/document-render.astro";
-import { defaultLocale, getClientTranslations, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
+import { getClientTranslations, getPreferredLocale, getTranslations } from "@/utils/i18n";
 
 if (!Astro.locals.user) return Astro.redirect("/auth");
 
@@ -24,7 +24,7 @@ const entry = await db.select().from(Document).where(
 ).get();
 if (!entry) return Astro.redirect("/404");
 
-const locale = getPreferredLocale(Astro.request.headers) ?? defaultLocale;
+const locale = getPreferredLocale(Astro.request.headers);
 const i18n = getTranslations(locale);
 
 // TODO: Move DocumentMenu to a reusable component and remove here

@@ -1,8 +1,8 @@
 import { getCollection } from "astro:content";
 
 // TODO: Find solution to reuse from or in astro.config, which are both currently not possible
-export const locales = ["en", "de"];
-export const defaultLocale = "en";
+const locales = ["en", "de"];
+const defaultLocale = "en";
 
 const translations = Object.fromEntries(
     (await getCollection("translations")).map(entry => [entry.id, entry.data])
@@ -13,7 +13,8 @@ export const getPreferredLocale = (headers: Headers) => {
     return headers.get("accept-language")
         ?.split(",")
         .map(lang => lang.split(";")[0].split("-")[0])
-        .find(lang => locales.includes(lang));
+        .find(lang => locales.includes(lang))
+        ?? defaultLocale;
 };
 
 export const getTranslations = (locale = defaultLocale) => {

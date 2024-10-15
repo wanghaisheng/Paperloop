@@ -6,14 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 
 import Layout from "@/components/custom/layout.astro";
+import Footer from "@/components/custom/footer.astro";
 import DocumentRender from "@/components/custom/document-render.astro";
-import { getTranslations } from "@/utils/i18n.ts";
 
 const title = "Predictable, reusable, and versioned documents";
 const description = "Paperloop let's you write documents with separated static and dynamic content. Easily manage invoices, offers, contracts, resumes, and more using Markdown.";
-
-// TODO: Currently only pre-rendered in English
-const i18n = getTranslations("en");
 ---
 
 <Layout title={title} description={description} locale={"en"} continuous>
@@ -45,21 +42,7 @@ const i18n = getTranslations("en");
             </CardContent>
         </Card>
     </div>
-    <hr class="mt-16 mb-6">
-    <div class="flex justify-between text-sm text-slate-500">
-        <p>
-            © 2024 Paperloop.
-        </p>
-        <div class="flex gap-2">
-            <a href="/imprint">
-                {i18n("imprint")}
-            </a>
-            •
-            <a href="https://github.com/leogreu/Paperloop">
-                GitHub
-            </a>
-        </div>
-    </div>
+    <Footer></Footer>
 </Layout>
 
 <script>

@@ -1,13 +1,14 @@
 ---
 import "@/styles/globals.css";
-import { getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
+import { getPreferredLocale, getTranslations } from "@/utils/i18n";
 import Layout from "@/components/custom/layout.astro";
+import Footer from "@/components/custom/footer.astro";
 
 const locale = getPreferredLocale(Astro.request.headers);
 const i18n = getTranslations(locale);
 ---
 
-<Layout title={i18n("privacy")} description={i18n("privacy-description")} locale={locale}>
+<Layout title={i18n("privacy")} description={i18n("privacy")} locale={locale}>
     <article class="prose dark:prose-invert max-w-xl mx-auto my-24 px-6">
         <h1 class="font-bold">{i18n("privacy")}</h1>
         <h3>{i18n("privacy.accountables.heading")}</h3>
@@ -57,4 +58,5 @@ const i18n = getTranslations(locale);
         <h4>{i18n("privacy.invites.duration.heading")}</h4>
         <p>{i18n("privacy.invites.duration.copy")}</p>
     </article>
+    <Footer></Footer>
 </Layout>

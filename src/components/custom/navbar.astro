@@ -2,7 +2,7 @@
 import { actions } from "astro:actions";
 import { User, LogOut } from "lucide-react";
 import { Button } from "../ui/button";
-import { getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
+import { getPreferredLocale, getTranslations } from "@/utils/i18n";
 import Logo from "/favicon.svg?raw";
 
 const locale = getPreferredLocale(Astro.request.headers);

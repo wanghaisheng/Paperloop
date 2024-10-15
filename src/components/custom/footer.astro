@@ -1,0 +1,28 @@
+---
+import { getPreferredLocale, getTranslations } from "@/utils/i18n";
+
+const locale = getPreferredLocale(Astro.request.headers);
+const i18n = getTranslations(locale);
+---
+
+<footer>
+    <hr class="mt-16 mb-6">
+    <div class="flex justify-between text-sm text-slate-500">
+        <p>
+            © 2024 Paperloop.
+        </p>
+        <div class="flex gap-2">
+            <a href="/imprint">
+                {i18n("imprint")}
+            </a>
+            •
+            <a href="/privacy">
+                {i18n("privacy")}
+            </a>
+            •
+            <a href="https://github.com/leogreu/Paperloop">
+                GitHub
+            </a>
+        </div>
+    </div>
+</footer>

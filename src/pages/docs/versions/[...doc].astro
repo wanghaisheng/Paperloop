@@ -7,7 +7,7 @@ import { diffWords } from "diff";
 
 import Layout from "@/components/custom/layout.astro";
 import DocumentHeader from "@/components/custom/document-header.astro";
-import { defaultLocale, getClientTranslations, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
+import { getClientTranslations, getPreferredLocale, getTranslations } from "@/utils/i18n";
 
 if (!Astro.locals.user) return Astro.redirect("/auth");
 
@@ -19,7 +19,7 @@ const docs = await db.select().from(Document).where(
 );
 if (!docs) return;
 
-const locale = getPreferredLocale(Astro.request.headers) ?? defaultLocale;
+const locale = getPreferredLocale(Astro.request.headers);
 const i18n = getTranslations(locale);
 
 // TODO: Move DocumentMenu to a reusable component and remove here

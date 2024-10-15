@@ -1,7 +1,7 @@
 ---
 import { CardTitle } from "../ui/card";
 import { Badge } from "@/components/ui/badge";
-import { defaultLocale, getPreferredLocale, getTranslations } from "@/utils/i18n.ts";
+import { getPreferredLocale, getTranslations } from "@/utils/i18n";
 
 // TODO: Defer type from db
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 
 const { doc } = Astro.props;
 
-const locale = getPreferredLocale(Astro.request.headers) ?? defaultLocale;
+const locale = getPreferredLocale(Astro.request.headers);
 const i18n = getTranslations(locale);
 ---
 
