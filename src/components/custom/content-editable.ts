@@ -15,9 +15,19 @@ export class ContentEditable extends HTMLElement {
                 cursor: text;
             }
 
+            [contenteditable]:not(:empty) {
+                text-decoration: underline;
+            }
+
             [contenteditable]:empty:before {
                 content: attr(placeholder);
                 color: hsl(var(--placeholder));
+            }
+
+            @media print {
+                [contenteditable]:not(:empty) {
+                    text-decoration: none;
+                }
             }
         `;
     }
@@ -25,7 +35,7 @@ export class ContentEditable extends HTMLElement {
     render() {
         this.shadowRoot!.innerHTML = `
             <style>${this.styles}</style>
-            <div placeholder=${this.placeholder} contenteditable="plaintext-only">${this.value}</div>
+            <div placeholder="${this.placeholder}" contenteditable="plaintext-only">${this.value}</div>
         `;
     }
 
