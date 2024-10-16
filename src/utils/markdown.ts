@@ -10,13 +10,13 @@ const md = markdownit({
 const frontmatter = /^---\s*\n([\s\S]*?)\n---/;
 
 export const markdownToHTML = (value: string, values: Record<string, string>) => {
-    const withoutFrontmatter = value.replace(frontmatter, "");
-
     // TODO: Evaluate whether to create markdown-it plugin
-    const replaced = withoutFrontmatter.replace(/\[(\S+)\](?!\()/g, (_, key) => {
-        const value = values[key] ?? String();
-        return `<content-editable value="${value}" placeholder="${key}"></content-editable>`;
-    });
+    const replaced = value
+        .replace(frontmatter, String())
+        .replace(/\[(\S+)\](?!\()/g, (_, key) => {
+            const value = values[key] ?? String();
+            return `<content-editable value="${value}" placeholder="${key}"></content-editable>`;
+        });
 
     // TODO: Evaluate whether to create markdown-it plugin
     const html = md.render(replaced);
