@@ -86,6 +86,33 @@ export interface Props {
     @media print {
         @page {
             margin: 2cm;
+
+            font-size: 0.75rem;
+            color: hsl(var(--border));
+
+            @top-left {
+                content: attr(top-left);
+            }
+
+            @top-center {
+                content: attr(top-center);
+            }
+
+            @top-right {
+                content: attr(top-right);
+            }
+
+            @bottom-left {
+                content: attr(bottom-left);
+            }
+
+            @bottom-center {
+                content: attr(bottom-center);
+            }
+
+            @bottom-right {
+                content: attr(bottom-right);
+            }
         }
 
         .prose hr {
