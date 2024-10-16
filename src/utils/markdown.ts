@@ -1,11 +1,16 @@
 import markdownit from "markdown-it";
 import anchor from "markdown-it-anchor";
+import frontmatter from "markdown-it-front-matter";
+import { parse } from "yaml";
 
 const md = markdownit({
     html: true,
     breaks: true
-}).use(anchor);
+})
+    .use(anchor)
+    .use(frontmatter, (data: string) => parsedFrontmatter = parse(data));
 
+export let parsedFrontmatter = {};
 export const markdownToHTML = (value: string, values: Record<string, string>) => {
     // TODO: Evaluate whether to create markdown-it plugin
     const replaced = value.replace(/\[(\S+)\](?!\()/g, (_, key) => {
@@ -24,7 +29,10 @@ export const markdownToHTML = (value: string, values: Record<string, string>) =>
         }
     }
 
-    return new XMLSerializer().serializeToString(parsed);
+    return {
+        frontmatter: parsedFrontmatter,
+        html: new XMLSerializer().serializeToString(parsed)
+    };
 };
 
 export const updateRender: {

@@ -32,7 +32,8 @@ export interface Props {
 
         // Intial render
         const renderDocument = () => {
-            render!.innerHTML = markdownToHTML(value, values);
+            const { frontmatter, html } = markdownToHTML(value, values);
+            render!.innerHTML = html;
         }
         renderDocument();
 
