@@ -152,6 +152,19 @@ text-right:img-w-8:img-mb-2:
 John Doe
 Metropolis, CA 90210
 
+## 12. Headers and footers
+
+You can use [Frontmatter](https://docs.github.com/en/contributing/writing-for-github-docs/using-yaml-frontmatter) to add headers and footers to your pages when printing a document. To do this, add the following block to the beginning of your document.
+
+```
+---
+top-left: Left-aligned header text
+bottom-center: Centered footer text
+---
+```
+
+Please note that this feature uses the new [Page-Margin Boxes](https://www.w3.org/TR/css-page-3/#margin-boxes) CSS feature, which is available starting in Chrome 131 (November, 2024).
+
 ---
 
 That's it for now. We hope you could learn something. If you have any questions left, just send us an email or open an issue over at [GitHub](https://github.com/leogreu/Paperloop/issues).
