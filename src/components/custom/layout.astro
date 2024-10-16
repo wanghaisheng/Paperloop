@@ -7,12 +7,13 @@ interface Props {
     description?: string;
     locale?: string;
     continuous?: boolean;
+    attributes?: Record<string, string>;
 }
 
-const { title, description, locale, continuous } = Astro.props;
+const { title, description, locale, continuous, attributes } = Astro.props;
 ---
 
-<html class="h-full" lang={locale}>
+<html class="h-full" lang={locale} {...attributes}>
     <head>
         <meta charset="utf-8" />
         <meta name="description" content={description ?? "Paperloop"}>

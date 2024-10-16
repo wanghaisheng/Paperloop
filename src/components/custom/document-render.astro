@@ -32,8 +32,7 @@ export interface Props {
 
         // Intial render
         const renderDocument = () => {
-            const { frontmatter, html } = markdownToHTML(value, values);
-            render!.innerHTML = html;
+            render!.innerHTML = markdownToHTML(value, values);
         }
         renderDocument();
 
@@ -87,6 +86,30 @@ export interface Props {
     @media print {
         @page {
             margin: 2cm;
+
+            @top-left {
+                content: attr(top-left);
+            }
+
+            @top-center {
+                content: attr(top-center);
+            }
+
+            @top-right {
+                content: attr(top-right);
+            }
+
+            @bottom-left {
+                content: attr(bottom-left);
+            }
+
+            @bottom-center {
+                content: attr(bottom-center);
+            }
+
+            @bottom-right {
+                content: attr(bottom-right);
+            }
         }
 
         .prose hr {

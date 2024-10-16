@@ -1,19 +1,19 @@
 import markdownit from "markdown-it";
 import anchor from "markdown-it-anchor";
-import frontmatter from "markdown-it-front-matter";
 import { parse } from "yaml";
 
 const md = markdownit({
     html: true,
     breaks: true
-})
-    .use(anchor)
-    .use(frontmatter, (data: string) => parsedFrontmatter = parse(data));
+}).use(anchor);
 
-export let parsedFrontmatter = {};
+const frontmatter = /^---\s*\n([\s\S]*?)\n---/;
+
 export const markdownToHTML = (value: string, values: Record<string, string>) => {
+    const withoutFrontmatter = value.replace(frontmatter, "");
+
     // TODO: Evaluate whether to create markdown-it plugin
-    const replaced = value.replace(/\[(\S+)\](?!\()/g, (_, key) => {
+    const replaced = withoutFrontmatter.replace(/\[(\S+)\](?!\()/g, (_, key) => {
         const value = values[key] ?? String();
         return `<content-editable value="${value}" placeholder="${key}"></content-editable>`;
     });
@@ -29,10 +29,12 @@ export const markdownToHTML = (value: string, values: Record<string, string>) =>
         }
     }
 
-    return {
-        frontmatter: parsedFrontmatter,
-        html: new XMLSerializer().serializeToString(parsed)
-    };
+    return new XMLSerializer().serializeToString(parsed);
+};
+
+export const parseFrontmatter = (value: string) => {
+    const [_, match] = value.match(frontmatter) ?? [];
+    return match && parse(match);
 };
 
 export const updateRender: {
