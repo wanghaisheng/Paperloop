@@ -58,7 +58,7 @@ To add a link, you can use the following syntax: `[Link Text](URL)`.
 
 You can also link to different headings on the current page:
 
-[Go to Headings](#1.-headings)
+[Go to Alignment](#alignment)
 
 ---
 
@@ -68,7 +68,7 @@ You can insert images using similar syntax to links, but with an exclamation mar
 
 ![Paperloop](https://paperloop.io/og-image.png)
 
-If you want to align or size your images, please refer to section [Alignment](#11.-alignment).
+If you want to align or size your images, please refer to section [Alignment](#alignment).
 
 ---
 
@@ -132,25 +132,25 @@ When you use a placeholder with the same variable name, it will get the same val
 
 **Example:** Thank you for reading this, [Name].
 
-## 11. Alignment
+## 11. Alignment {#alignment}
 
-Paperloop also allows you to align text using [Tailwind CSS](https://tailwindcss.com/) classes. If you want a sentence or word to be right-aligned, simple write `text-right:` in front of it.
+Paperloop also allows you to align text using [Tailwind CSS](https://tailwindcss.com/) classes. If you want a sentence or word to be right-aligned, simple add `{.text-right}` to the end.
 
-text-right: This text is on the right
+This text is on the right {.text-right}
 
 You can also align an multi-line paragraphs:
 
-text-center:
 **This is a centered text block**
 with text on multiple lines.
+{.text-right}
 
 You can use the same syntax to align images. Together with the option to resize them using `img-w-8` (where 8 stands for a size unit in [Tailwind](https://tailwindcss.com/docs/width)), you can create a custom letter header for your company. The suffix `img-mb-2:` lets you specify the space below an image (margin bottom, as explained [here](https://tailwindcss.com/docs/margin)).
 
-text-right:img-w-8:img-mb-2:
 ![Logo](/favicon.svg)
 **Paperloop, Inc.**
 John Doe
 Metropolis, CA 90210
+{.text-right .prose-img:w-8 .prose-img:mb-2}
 
 ## 12. Headers and footers
 
