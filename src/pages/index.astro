@@ -58,10 +58,11 @@ const description = "Paperloop let's you write documents with separated static a
                 updateRender.setValue?.(instance.element.innerText.replace("|", ""));
             }
         })
-            .type("text-right:<br>**Paperloop, Inc.**<br>", { delay: 400 })
+            .type("**Paperloop, Inc.**<br>", { delay: 400 })
             .type("John Doe<br>", { delay: 400 })
             .type("1234 Innovation Drive<br>", { delay: 400 })
             .type("Metropolis, CA 90210<br>", { delay: 400 })
+            .type("{.text-right}<br>", { delay: 400 })
             .type("<br>", { delay: 400 })
             .type("[Firstname] [Lastname]<br>", { delay: 400 })
             .type("[Address]<br>", { delay: 400 })
