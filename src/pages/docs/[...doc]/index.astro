@@ -110,6 +110,7 @@ const client = getClientTranslations(locale);
             parent: editor,
             doc: value,
             extensions: [
+                EditorView.contentAttributes.of({ spellcheck: "true" }),
                 EditorView.lineWrapping,
                 keymap.of(standardKeymap),
                 keymap.of(historyKeymap),
