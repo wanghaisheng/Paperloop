@@ -21,7 +21,7 @@ export class ContentEditable extends HTMLElement {
                 color: hsl(var(--placeholder));
             }
 
-            :host([highlight]) [contenteditable]:not(:empty) {
+            :host([underline]) [contenteditable]:not(:empty) {
                 text-decoration: underline;
             }
 
