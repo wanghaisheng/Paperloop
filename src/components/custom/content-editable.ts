@@ -15,13 +15,14 @@ export class ContentEditable extends HTMLElement {
                 cursor: text;
             }
 
-            [contenteditable]:not(:empty) {
-                text-decoration: underline;
-            }
 
             [contenteditable]:empty:before {
                 content: attr(placeholder);
                 color: hsl(var(--placeholder));
+            }
+
+            :host([highlight]) [contenteditable]:not(:empty) {
+                text-decoration: underline;
             }
 
             @media print {
@@ -55,3 +56,9 @@ export class ContentEditable extends HTMLElement {
 }
 
 customElements.define("content-editable", ContentEditable);
+
+declare global {
+    interface HTMLElementTagNameMap {
+        "content-editable": ContentEditable;
+    }
+}

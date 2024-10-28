@@ -10,7 +10,6 @@ import { Eraser, Maximize } from "lucide-react";
 import Layout from "@/components/custom/layout.astro";
 import Particles from "@/components/custom/particles.astro";
 import DocumentHeader from "@/components/custom/document-header.astro";
-import ContentEditable from "@/components/custom/content-editable.astro";
 import DocumentRender from "@/components/custom/document-render.astro";
 import { getClientTranslations, getPreferredLocale, getTranslations } from "@/utils/i18n";
 
@@ -41,9 +40,11 @@ const client = getClientTranslations(locale);
             <Card className="h-full flex-1 overflow-auto">
                 <CardHeader>
                     <DocumentHeader doc={entry}>
-                        <ContentEditable slot="title" placeholder={i18n("new-document")}>
-                            {entry.name}
-                        </ContentEditable>
+                        <content-editable 
+                            slot="title"
+                            value={entry.name}
+                            placeholder={i18n("new-document")}
+                        ></content-editable>
                         <DocumentMenu
                             slot="actions"
                             id={entry.id}
@@ -137,12 +138,11 @@ const client = getClientTranslations(locale);
             }
         });
 
-        const nameInput = document.querySelector("div[contenteditable]");
-        nameInput?.addEventListener("blur", () => {
-            if (nameInput) {
+        document.querySelector("content-editable")?.addEventListener("blur", ({ target }) => {
+            if (target instanceof HTMLElement && "value" in target && typeof target.value === "string") {
                 actions.updateDocument({
                     id,
-                    name: nameInput.textContent ?? String()
+                    name: target.value
                 });
             }
         });
