@@ -18,16 +18,17 @@ const distinct = docs.filter((doc, index) => {
     return index === docs.findIndex(entry => entry.document === doc.document);
 });
 
-// TODO: Use Object.groupBy() when available
-const tags = distinct.reduce<Record<string, typeof docs>>((result, doc) => {
-    const [_, match] = doc.name.match(/#(\w+)/) ?? [];
-    (result[match ?? "general"] ??= []).push(doc);
-    return result;
-}, {});
-
 // Used to provide a language-specific meta alternate link for SEO
 const locale = getPreferredLocale(Astro.request.headers);
 const i18n = getTranslations(locale);
+
+// TODO: Use Object.groupBy() when available
+const defaultTag = i18n("general");
+const tags = distinct.reduce<Record<string, typeof docs>>((result, doc) => {
+    const [_, match] = doc.name.match(/#(\w+)/) ?? [];
+    (result[match ?? defaultTag] ??= []).push(doc);
+    return result;
+}, {});
 ---
 
 <Layout title={i18n("my-documents")} locale={locale}>
