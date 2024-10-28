@@ -20,7 +20,7 @@ const i18n = getTranslations(locale);
 <CardTitle className="flex items-center justify-between">
     <div class="flex items-center gap-2">
         <slot name="title">
-            {doc.name || i18n("new-document")}
+            {doc.name.replace(/#\w+/, "") || i18n("new-document")}
         </slot>
         <Badge variant="secondary">
             {doc.version

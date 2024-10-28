@@ -10,7 +10,7 @@ export const createGettingStarted = async (userId: string) => {
         updated: new Date(),
         user: userId,
         version: 1,
-        name: "Getting started",
+        name: "#Paperloop Getting started",
         markdown: markdown.body
     })
 };
