@@ -26,7 +26,9 @@ export class ContentEditable extends HTMLElement {
             }
 
             span {
-                color: hsl(var(--placeholder));
+                padding: .25rem .5rem;
+                background-color: hsl(var(--secondary));
+                border-radius: var(--radius);
             }
 
             @media print {
