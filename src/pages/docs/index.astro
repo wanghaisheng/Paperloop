@@ -18,32 +18,48 @@ const distinct = docs.filter((doc, index) => {
     return index === docs.findIndex(entry => entry.document === doc.document);
 });
 
+// TODO: Use Object.groupBy() when available
+const tags = distinct.reduce<Record<string, typeof docs>>((result, doc) => {
+    const [_, match] = doc.name.match(/#(\w+)/) ?? [];
+    (result[match ?? "general"] ??= []).push(doc);
+    return result;
+}, {});
+
 // Used to provide a language-specific meta alternate link for SEO
 const locale = getPreferredLocale(Astro.request.headers);
 const i18n = getTranslations(locale);
 ---
 
 <Layout title={i18n("my-documents")} locale={locale}>
-    {distinct.length
-        ? <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-4">
-            {distinct.map(doc =>
-                <a href={"docs/" + doc.id} transition:name={doc.id}>
-                    <Card className="flex flex-col h-full cursor-pointer">
-                        <CardHeader>
-                            <DocumentHeader doc={doc}></DocumentHeader>
-                        </CardHeader>
-                        <CardContent className="flex-1">
-                            <article class="whitespace-pre-line line-clamp-3">
-                                {doc.markdown.slice(0, 200)}
-                            </article>
-                        </CardContent>
-                        <CardFooter>
-                            <p class="leading-none text-sm text-gray-400">
-                                <time datetime={doc.updated.toISOString()}>&nbsp;</time>
-                            </p>
-                        </CardFooter>
-                    </Card>
-                </a>
+    {Object.keys(tags).length
+        ? <div class="flex flex-col gap-8">
+            {Object.entries(tags).map(([tag, docs]) =>
+                <div class="flex flex-col gap-4">
+                    <div class="py-2 px-4 border rounded-md bg-secondary text-sm font-medium">
+                        {tag}
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 auto-rows-fr gap-4">
+                        {docs.map(doc =>
+                            <a href={"docs/" + doc.id} transition:name={doc.id}>
+                                <Card className="flex flex-col h-full cursor-pointer">
+                                    <CardHeader>
+                                        <DocumentHeader doc={doc}></DocumentHeader>
+                                    </CardHeader>
+                                    <CardContent className="flex-1">
+                                        <article class="whitespace-pre-line line-clamp-3">
+                                            {doc.markdown.slice(0, 200)}
+                                        </article>
+                                    </CardContent>
+                                    <CardFooter>
+                                        <p class="leading-none text-sm text-gray-400">
+                                            <time datetime={doc.updated.toISOString()}>&nbsp;</time>
+                                        </p>
+                                    </CardFooter>
+                                </Card>
+                            </a>
+                        )}
+                    </div>
+                </div>
             )}
         </div>
         : <Empty>
