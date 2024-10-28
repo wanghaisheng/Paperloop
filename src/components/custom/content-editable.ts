@@ -68,7 +68,7 @@ export class ContentEditable extends HTMLElement {
     }
 
     highlightTag() {
-        this.content.innerHTML = this.value.replace(/(#\w+)/g, "<span>$1</span>");
+        this.content.innerHTML = this.value.replace(/(#[^\s]+)/g, "<span>$1</span>");
     }
 }
 

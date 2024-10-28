@@ -25,7 +25,7 @@ const i18n = getTranslations(locale);
 // TODO: Use Object.groupBy() when available
 const defaultTag = i18n("general");
 const tags = distinct.reduce<Record<string, typeof docs>>((result, doc) => {
-    const [_, match] = doc.name.match(/#(\w+)/) ?? [];
+    const [_, match] = doc.name.match(/#([^\s]+)/) ?? [];
     (result[match ?? defaultTag] ??= []).push(doc);
     return result;
 }, {});
