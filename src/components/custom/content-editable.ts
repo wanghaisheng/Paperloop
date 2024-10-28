@@ -25,6 +25,10 @@ export class ContentEditable extends HTMLElement {
                 text-decoration: underline;
             }
 
+            span {
+                color: hsl(var(--placeholder));
+            }
+
             @media print {
                 [contenteditable]:not(:empty) {
                     text-decoration: none;
@@ -40,18 +44,29 @@ export class ContentEditable extends HTMLElement {
         `;
     }
 
+    get content() {
+        return this.shadowRoot?.querySelector("div")!;
+    }
+
     constructor() {
         super();
         const shadowRoot = this.attachShadow({ mode: "open" });
         this.addEventListener("input", () => {
             // Unset textContent due to issue with Safari (still containing a <br>)
-            this.value = shadowRoot.querySelector("div")!.textContent ||= String();
+            this.value = this.content.textContent ||= String();
         });
+
+        this.addEventListener("blur", this.highlightTag);
     }
 
     attributeChangedCallback(name: string, _: string, value: string) {
         Reflect.set(this, name, value);
         this.render();
+        this.highlightTag();
+    }
+
+    highlightTag() {
+        this.content.innerHTML = this.value.replace(/(#\w+)/g, "<span>$1</span>");
     }
 }
 
