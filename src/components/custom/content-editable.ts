@@ -32,7 +32,7 @@ export class ContentEditable extends HTMLElement {
             }
 
             @media print {
-                [contenteditable]:not(:empty) {
+                :host([underline]) [contenteditable]:not(:empty) {
                     text-decoration: none;
                 }
             }
